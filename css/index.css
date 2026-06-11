@@ -335,6 +335,10 @@ button {
   margin: 0;
 }
 
+.blocklyToolboxCategoryLabel {
+  font: 16px var(--font-ui);
+}
+
 .blocklyTreeRow {
   display: flex !important;
   align-items: center !important;
