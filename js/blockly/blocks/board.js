@@ -9,10 +9,10 @@ export function registerBoardBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_start',
-        message0: 'when program starts',
+        message0: '%{BKY_XRP_START}',
         nextStatement: null,
         style: 'events_blocks',
-        tooltip: 'The starting point for the program.',
+        tooltip: '%{BKY_XRP_START_TOOLTIP}',
         helpUrl: '',
       });
       this.setDeletable(false);
@@ -24,11 +24,11 @@ export function registerBoardBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_led_on',
-        message0: 'turn LED on',
+        message0: '%{BKY_XRP_LED_ON}',
         previousStatement: null,
         nextStatement: null,
         style: 'board_blocks',
-        tooltip: 'Turn the onboard LED on.',
+        tooltip: '%{BKY_XRP_LED_ON_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -39,11 +39,11 @@ export function registerBoardBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_led_off',
-        message0: 'turn LED off',
+        message0: '%{BKY_XRP_LED_OFF}',
         previousStatement: null,
         nextStatement: null,
         style: 'board_blocks',
-        tooltip: 'Turn the onboard LED off.',
+        tooltip: '%{BKY_XRP_LED_OFF_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -54,7 +54,7 @@ export function registerBoardBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_led_blink',
-        message0: 'blink LED %1 times with %2 s delay',
+        message0: '%{BKY_XRP_LED_BLINK}',
         args0: [
           { type: 'input_value', name: 'COUNT', check: 'Number' },
           { type: 'input_value', name: 'DELAY', check: 'Number' },
@@ -63,7 +63,7 @@ export function registerBoardBlocks() {
         previousStatement: null,
         nextStatement: null,
         style: 'board_blocks',
-        tooltip: 'Blink the onboard LED a number of times.',
+        tooltip: '%{BKY_XRP_LED_BLINK_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -74,7 +74,7 @@ export function registerBoardBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_rgb_led',
-        message0: 'set RGB LED red %1 green %2 blue %3',
+        message0: '%{BKY_XRP_RGB_LED}',
         args0: [
           { type: 'input_value', name: 'RED', check: 'Number' },
           { type: 'input_value', name: 'GREEN', check: 'Number' },
@@ -84,7 +84,7 @@ export function registerBoardBlocks() {
         previousStatement: null,
         nextStatement: null,
         style: 'board_blocks',
-        tooltip: 'Set the RGB LED color (0–255 for each channel).',
+        tooltip: '%{BKY_XRP_RGB_LED_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -95,14 +95,14 @@ export function registerBoardBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_wait_seconds',
-        message0: 'wait %1 seconds',
+        message0: '%{BKY_XRP_WAIT_SECONDS}',
         args0: [
           { type: 'input_value', name: 'SECONDS', check: 'Number' },
         ],
         previousStatement: null,
         nextStatement: null,
         style: 'board_blocks',
-        tooltip: 'Pause the program for a number of seconds.',
+        tooltip: '%{BKY_XRP_WAIT_SECONDS_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -113,14 +113,14 @@ export function registerBoardBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_print',
-        message0: 'print %1',
+        message0: '%{BKY_XRP_PRINT}',
         args0: [
           { type: 'input_value', name: 'TEXT' },
         ],
         previousStatement: null,
         nextStatement: null,
         style: 'board_blocks',
-        tooltip: 'Print a message to the console.',
+        tooltip: '%{BKY_XRP_PRINT_TOOLTIP}',
         helpUrl: '',
       });
     },

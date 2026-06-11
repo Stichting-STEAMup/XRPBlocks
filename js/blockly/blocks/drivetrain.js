@@ -10,7 +10,7 @@ export function registerDrivetrainBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_drive_straight',
-        message0: 'drive straight %1 cm',
+        message0: '%{BKY_XRP_DRIVE_STRAIGHT}',
         args0: [
           {
             type: 'input_value',
@@ -21,7 +21,7 @@ export function registerDrivetrainBlocks() {
         previousStatement: null,
         nextStatement: null,
         style: 'drive_blocks',
-        tooltip: 'Drive the robot straight. Positive = forward, negative = backward.',
+        tooltip: '%{BKY_XRP_DRIVE_STRAIGHT_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -32,7 +32,7 @@ export function registerDrivetrainBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_drive_straight_effort',
-        message0: 'drive straight %1 cm at %2 % effort',
+        message0: '%{BKY_XRP_DRIVE_STRAIGHT_EFFORT}',
         args0: [
           { type: 'input_value', name: 'DISTANCE', check: 'Number' },
           { type: 'input_value', name: 'EFFORT', check: 'Number' },
@@ -41,7 +41,7 @@ export function registerDrivetrainBlocks() {
         previousStatement: null,
         nextStatement: null,
         style: 'drive_blocks',
-        tooltip: 'Drive straight a distance at a specific effort (0–100%).',
+        tooltip: '%{BKY_XRP_DRIVE_STRAIGHT_EFFORT_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -52,14 +52,14 @@ export function registerDrivetrainBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_drive_turn',
-        message0: 'turn %1 degrees',
+        message0: '%{BKY_XRP_DRIVE_TURN}',
         args0: [
           { type: 'input_value', name: 'ANGLE', check: 'Number' },
         ],
         previousStatement: null,
         nextStatement: null,
         style: 'drive_blocks',
-        tooltip: 'Turn the robot. Positive = right, negative = left.',
+        tooltip: '%{BKY_XRP_DRIVE_TURN_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -70,7 +70,7 @@ export function registerDrivetrainBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_drive_turn_effort',
-        message0: 'turn %1 degrees at %2 % effort',
+        message0: '%{BKY_XRP_DRIVE_TURN_EFFORT}',
         args0: [
           { type: 'input_value', name: 'ANGLE', check: 'Number' },
           { type: 'input_value', name: 'EFFORT', check: 'Number' },
@@ -79,7 +79,7 @@ export function registerDrivetrainBlocks() {
         previousStatement: null,
         nextStatement: null,
         style: 'drive_blocks',
-        tooltip: 'Turn a specific angle at a specific effort (0–100%).',
+        tooltip: '%{BKY_XRP_DRIVE_TURN_EFFORT_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -90,11 +90,11 @@ export function registerDrivetrainBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_drive_stop',
-        message0: 'stop driving',
+        message0: '%{BKY_XRP_DRIVE_STOP}',
         previousStatement: null,
         nextStatement: null,
         style: 'drive_blocks',
-        tooltip: 'Stop the robot immediately.',
+        tooltip: '%{BKY_XRP_DRIVE_STOP_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -105,7 +105,7 @@ export function registerDrivetrainBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_drive_set_effort',
-        message0: 'set drive effort left %1 right %2',
+        message0: '%{BKY_XRP_DRIVE_SET_EFFORT}',
         args0: [
           { type: 'input_value', name: 'LEFT', check: 'Number' },
           { type: 'input_value', name: 'RIGHT', check: 'Number' },
@@ -114,7 +114,7 @@ export function registerDrivetrainBlocks() {
         previousStatement: null,
         nextStatement: null,
         style: 'drive_blocks',
-        tooltip: 'Set left and right motor effort directly (-1 to 1).',
+        tooltip: '%{BKY_XRP_DRIVE_SET_EFFORT_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -125,7 +125,7 @@ export function registerDrivetrainBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_drive_set_speed',
-        message0: 'set drive speed left %1 right %2',
+        message0: '%{BKY_XRP_DRIVE_SET_SPEED}',
         args0: [
           { type: 'input_value', name: 'LEFT', check: 'Number' },
           { type: 'input_value', name: 'RIGHT', check: 'Number' },
@@ -134,7 +134,7 @@ export function registerDrivetrainBlocks() {
         previousStatement: null,
         nextStatement: null,
         style: 'drive_blocks',
-        tooltip: 'Set the speed of the left and right motors.',
+        tooltip: '%{BKY_XRP_DRIVE_SET_SPEED_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -145,7 +145,7 @@ export function registerDrivetrainBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_drive_arcade',
-        message0: 'arcade drive speed %1 turn %2',
+        message0: '%{BKY_XRP_DRIVE_ARCADE}',
         args0: [
           { type: 'input_value', name: 'SPEED', check: 'Number' },
           { type: 'input_value', name: 'TURN', check: 'Number' },
@@ -154,7 +154,7 @@ export function registerDrivetrainBlocks() {
         previousStatement: null,
         nextStatement: null,
         style: 'drive_blocks',
-        tooltip: 'Drive using arcade style: forward/backward speed and turning.',
+        tooltip: '%{BKY_XRP_DRIVE_ARCADE_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -165,10 +165,10 @@ export function registerDrivetrainBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_drive_get_left_encoder',
-        message0: 'left encoder position',
+        message0: '%{BKY_XRP_DRIVE_LEFT_ENCODER}',
         output: 'Number',
         style: 'drive_blocks',
-        tooltip: 'Get the current position of the left wheel encoder.',
+        tooltip: '%{BKY_XRP_DRIVE_LEFT_ENCODER_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -179,10 +179,10 @@ export function registerDrivetrainBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_drive_get_right_encoder',
-        message0: 'right encoder position',
+        message0: '%{BKY_XRP_DRIVE_RIGHT_ENCODER}',
         output: 'Number',
         style: 'drive_blocks',
-        tooltip: 'Get the current position of the right wheel encoder.',
+        tooltip: '%{BKY_XRP_DRIVE_RIGHT_ENCODER_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -193,11 +193,11 @@ export function registerDrivetrainBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_drive_reset_encoders',
-        message0: 'reset drive encoders',
+        message0: '%{BKY_XRP_DRIVE_RESET_ENCODERS}',
         previousStatement: null,
         nextStatement: null,
         style: 'drive_blocks',
-        tooltip: 'Reset both wheel encoder positions to zero.',
+        tooltip: '%{BKY_XRP_DRIVE_RESET_ENCODERS_TOOLTIP}',
         helpUrl: '',
       });
     },

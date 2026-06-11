@@ -173,6 +173,25 @@ button {
   margin: 0 var(--space-sm);
 }
 
+.toolbar__select {
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 12px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  color: var(--color-text);
+  outline: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.toolbar__select:hover {
+  border-color: var(--color-primary);
+  background: var(--color-surface-hover);
+}
+
 /* Toolbar buttons */
 .toolbar__btn {
   display: inline-flex;

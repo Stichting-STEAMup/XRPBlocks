@@ -5,8 +5,8 @@
 
 export function registerMotorBlocks() {
   const MOTOR_OPTIONS = [
-    ['left', 'LEFT'],
-    ['right', 'RIGHT'],
+    ['%{BKY_XRP_LEFT}', 'LEFT'],
+    ['%{BKY_XRP_RIGHT}', 'RIGHT'],
     ['motor 3', 'MOTOR3'],
     ['motor 4', 'MOTOR4'],
   ];
@@ -16,7 +16,7 @@ export function registerMotorBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_motor_set_effort',
-        message0: 'set %1 motor effort to %2',
+        message0: '%{BKY_XRP_MOTOR_SET_EFFORT}',
         args0: [
           { type: 'field_dropdown', name: 'MOTOR', options: MOTOR_OPTIONS },
           { type: 'input_value', name: 'EFFORT', check: 'Number' },
@@ -25,7 +25,7 @@ export function registerMotorBlocks() {
         previousStatement: null,
         nextStatement: null,
         style: 'motor_blocks',
-        tooltip: 'Set the effort (power) of a motor (-1 to 1).',
+        tooltip: '%{BKY_XRP_MOTOR_SET_EFFORT_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -36,7 +36,7 @@ export function registerMotorBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_motor_set_speed',
-        message0: 'set %1 motor speed to %2',
+        message0: '%{BKY_XRP_MOTOR_SET_SPEED}',
         args0: [
           { type: 'field_dropdown', name: 'MOTOR', options: MOTOR_OPTIONS },
           { type: 'input_value', name: 'SPEED', check: 'Number' },
@@ -45,7 +45,7 @@ export function registerMotorBlocks() {
         previousStatement: null,
         nextStatement: null,
         style: 'motor_blocks',
-        tooltip: 'Set the target speed of a motor (rotations per second).',
+        tooltip: '%{BKY_XRP_MOTOR_SET_SPEED_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -56,13 +56,13 @@ export function registerMotorBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_motor_get_position',
-        message0: '%1 motor position',
+        message0: '%{BKY_XRP_MOTOR_GET_POSITION}',
         args0: [
           { type: 'field_dropdown', name: 'MOTOR', options: MOTOR_OPTIONS },
         ],
         output: 'Number',
         style: 'motor_blocks',
-        tooltip: 'Get the current encoder position of a motor.',
+        tooltip: '%{BKY_XRP_MOTOR_GET_POSITION_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -73,13 +73,13 @@ export function registerMotorBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_motor_get_speed',
-        message0: '%1 motor speed',
+        message0: '%{BKY_XRP_MOTOR_GET_SPEED}',
         args0: [
           { type: 'field_dropdown', name: 'MOTOR', options: MOTOR_OPTIONS },
         ],
         output: 'Number',
         style: 'motor_blocks',
-        tooltip: 'Get the current speed of a motor.',
+        tooltip: '%{BKY_XRP_MOTOR_GET_SPEED_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -90,14 +90,14 @@ export function registerMotorBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_motor_reset_encoder',
-        message0: 'reset %1 motor encoder',
+        message0: '%{BKY_XRP_MOTOR_RESET_ENCODER}',
         args0: [
           { type: 'field_dropdown', name: 'MOTOR', options: MOTOR_OPTIONS },
         ],
         previousStatement: null,
         nextStatement: null,
         style: 'motor_blocks',
-        tooltip: 'Reset the encoder position of a motor to zero.',
+        tooltip: '%{BKY_XRP_MOTOR_RESET_ENCODER_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -108,14 +108,14 @@ export function registerMotorBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_motor_brake',
-        message0: 'brake %1 motor',
+        message0: '%{BKY_XRP_MOTOR_BRAKE}',
         args0: [
           { type: 'field_dropdown', name: 'MOTOR', options: MOTOR_OPTIONS },
         ],
         previousStatement: null,
         nextStatement: null,
         style: 'motor_blocks',
-        tooltip: 'Actively brake the motor (hold position).',
+        tooltip: '%{BKY_XRP_MOTOR_BRAKE_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -126,14 +126,14 @@ export function registerMotorBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_motor_coast',
-        message0: 'coast %1 motor',
+        message0: '%{BKY_XRP_MOTOR_COAST}',
         args0: [
           { type: 'field_dropdown', name: 'MOTOR', options: MOTOR_OPTIONS },
         ],
         previousStatement: null,
         nextStatement: null,
         style: 'motor_blocks',
-        tooltip: 'Let the motor coast freely (no power).',
+        tooltip: '%{BKY_XRP_MOTOR_COAST_TOOLTIP}',
         helpUrl: '',
       });
     },

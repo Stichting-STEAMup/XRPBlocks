@@ -10,7 +10,7 @@ export function getToolboxDefinition() {
       // ── XRP Categories ──
       {
         kind: 'category',
-        name: 'Events',
+        name: Blockly.Msg['CAT_EVENTS'] || 'Events',
         categorystyle: 'events_category',
         cssConfig: { icon: 'cat-icon cat-icon-events' },
         contents: [
@@ -19,7 +19,7 @@ export function getToolboxDefinition() {
       },
       {
         kind: 'category',
-        name: 'Drive',
+        name: Blockly.Msg['CAT_DRIVE'] || 'Drive',
         categorystyle: 'drive_category',
         cssConfig: { icon: 'cat-icon cat-icon-drive' },
         contents: [
@@ -88,7 +88,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
-        name: 'Motors',
+        name: Blockly.Msg['CAT_MOTORS'] || 'Motors',
         categorystyle: 'motor_category',
         cssConfig: { icon: 'cat-icon cat-icon-motors' },
         contents: [
@@ -117,7 +117,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
-        name: 'Servo',
+        name: Blockly.Msg['CAT_SERVO'] || 'Servo',
         categorystyle: 'servo_category',
         cssConfig: { icon: 'cat-icon cat-icon-servo' },
         contents: [
@@ -134,7 +134,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
-        name: 'Sensors',
+        name: Blockly.Msg['CAT_SENSORS'] || 'Sensors',
         categorystyle: 'sensor_category',
         cssConfig: { icon: 'cat-icon cat-icon-sensors' },
         contents: [
@@ -155,7 +155,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
-        name: 'Board',
+        name: Blockly.Msg['CAT_BOARD'] || 'Board',
         categorystyle: 'board_category',
         cssConfig: { icon: 'cat-icon cat-icon-board' },
         contents: [
@@ -202,7 +202,7 @@ export function getToolboxDefinition() {
       // ── Standard Blockly Categories ──
       {
         kind: 'category',
-        name: 'Logic',
+        name: Blockly.Msg['CAT_LOGIC'] || 'Logic',
         categorystyle: 'logic_category',
         cssConfig: { icon: 'cat-icon cat-icon-logic' },
         contents: [
@@ -222,7 +222,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
-        name: 'Loops',
+        name: Blockly.Msg['CAT_LOOPS'] || 'Loops',
         categorystyle: 'loop_category',
         cssConfig: { icon: 'cat-icon cat-icon-loops' },
         contents: [
@@ -251,7 +251,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
-        name: 'Math',
+        name: Blockly.Msg['CAT_MATH'] || 'Math',
         categorystyle: 'math_category',
         cssConfig: { icon: 'cat-icon cat-icon-math' },
         contents: [
@@ -278,7 +278,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
-        name: 'Text',
+        name: Blockly.Msg['CAT_TEXT'] || 'Text',
         categorystyle: 'text_category',
         cssConfig: { icon: 'cat-icon cat-icon-text' },
         contents: [
@@ -294,7 +294,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
-        name: 'Variables',
+        name: Blockly.Msg['CAT_VARIABLES'] || 'Variables',
         categorystyle: 'variable_category',
         cssConfig: { icon: 'cat-icon cat-icon-variables' },
         custom: 'VARIABLE',
@@ -302,7 +302,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
-        name: 'Functions',
+        name: Blockly.Msg['CAT_FUNCTIONS'] || 'Functions',
         categorystyle: 'procedure_category',
         cssConfig: { icon: 'cat-icon cat-icon-functions' },
         custom: 'PROCEDURE',

@@ -14,7 +14,7 @@ export function registerServoBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_servo_set_angle',
-        message0: 'set %1 angle to %2 degrees',
+        message0: '%{BKY_XRP_SERVO_SET_ANGLE}',
         args0: [
           { type: 'field_dropdown', name: 'SERVO', options: SERVO_OPTIONS },
           { type: 'input_value', name: 'ANGLE', check: 'Number' },
@@ -23,7 +23,7 @@ export function registerServoBlocks() {
         previousStatement: null,
         nextStatement: null,
         style: 'servo_blocks',
-        tooltip: 'Set a servo to a specific angle (0–180 degrees).',
+        tooltip: '%{BKY_XRP_SERVO_SET_ANGLE_TOOLTIP}',
         helpUrl: '',
       });
     },
@@ -34,14 +34,14 @@ export function registerServoBlocks() {
     init() {
       this.jsonInit({
         type: 'xrp_servo_free',
-        message0: 'release %1',
+        message0: '%{BKY_XRP_SERVO_FREE}',
         args0: [
           { type: 'field_dropdown', name: 'SERVO', options: SERVO_OPTIONS },
         ],
         previousStatement: null,
         nextStatement: null,
         style: 'servo_blocks',
-        tooltip: 'Release the servo so it can move freely.',
+        tooltip: '%{BKY_XRP_SERVO_FREE_TOOLTIP}',
         helpUrl: '',
       });
     },

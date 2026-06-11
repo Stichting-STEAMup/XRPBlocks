@@ -45,11 +45,11 @@ export class Toolbar {
           <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
           <line x1="12" y1="2" x2="12" y2="12"/>
         </svg>
-        <span class="btn-label">Disconnect</span>
+        <span class="btn-label">${Blockly.Msg['UI_DISCONNECT'] || 'Disconnect'}</span>
       `;
       this.connectBtn.classList.add('connected');
       this.statusDot?.classList.add('connected');
-      if (this.statusText) this.statusText.textContent = 'Connected';
+      if (this.statusText) this.statusText.textContent = Blockly.Msg['UI_CONNECTED'] || 'Connected';
       this.runBtn.disabled = false;
     } else {
       this.connectBtn.innerHTML = `
@@ -62,11 +62,11 @@ export class Toolbar {
           <path d="m10 14 5 2 3.5-3.5" />
           <path d="m18 12 1-1 1 1-1 1Z" />
         </svg>
-        <span class="btn-label">Connect XRP</span>
+        <span class="btn-label">${Blockly.Msg['UI_CONNECT'] || 'Connect XRP'}</span>
       `;
       this.connectBtn.classList.remove('connected');
       this.statusDot?.classList.remove('connected');
-      if (this.statusText) this.statusText.textContent = 'Disconnected';
+      if (this.statusText) this.statusText.textContent = Blockly.Msg['UI_DISCONNECTED'] || 'Disconnected';
       this.runBtn.disabled = true;
     }
 

@@ -20,6 +20,7 @@ import { XRPSerial } from './serial/webserial.js';
 import { Toolbar } from './ui/toolbar.js';
 import { PythonPanel } from './ui/python-panel.js';
 import { ConsolePanel } from './ui/console-panel.js';
+import { XRP_TRANSLATIONS } from './ui/translations.js';
 
 class XRPBlocksApp {
   constructor() {
@@ -29,6 +30,7 @@ class XRPBlocksApp {
     this.consolePanel = null;
     this.toolbar = null;
     this._pythonGenerator = null;
+    this.lang = 'en';
   }
 
   /**
@@ -66,6 +68,67 @@ class XRPBlocksApp {
     this._generateCode();
 
     console.log('🤖 XRP Blocks IDE initialized');
+  }
+
+  // ── Language Support ──
+
+  async loadLanguage() {
+    // Detect default browser language (Dutch or English)
+    let defaultLang = 'en';
+    const browserLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+    if (browserLang.startsWith('nl')) {
+      defaultLang = 'nl';
+    }
+
+    this.lang = localStorage.getItem('xrp_blocks_language') || defaultLang;
+    try {
+      await this._loadScript(`js/vendor/blockly/msg/${this.lang}.js`);
+    } catch (err) {
+      console.warn(`Failed to load language script for ${this.lang}, falling back to English.`, err);
+      this.lang = 'en';
+      await this._loadScript('js/vendor/blockly/msg/en.js');
+    }
+    const trans = XRP_TRANSLATIONS[this.lang] || XRP_TRANSLATIONS['en'];
+    for (const key in trans) {
+      Blockly.Msg[key] = trans[key];
+    }
+  }
+
+  _loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+      document.head.appendChild(script);
+    });
+  }
+
+  _applyLanguageToDOM() {
+    const i18nElements = document.querySelectorAll('[data-i18n]');
+    i18nElements.forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      const translation = Blockly.Msg[key];
+      if (translation) {
+        el.textContent = translation;
+      }
+    });
+
+    const tooltipElements = document.querySelectorAll('[data-i18n-tooltip]');
+    tooltipElements.forEach(el => {
+      const key = el.getAttribute('data-i18n-tooltip');
+      const translation = Blockly.Msg[key];
+      if (translation) {
+        el.setAttribute('data-tooltip', translation);
+      }
+    });
+  }
+
+  _switchLanguage(lang) {
+    if (lang === this.lang) return;
+    this._autoSave();
+    localStorage.setItem('xrp_blocks_language', lang);
+    window.location.reload();
   }
 
   // ── Block Registration ──
@@ -138,25 +201,26 @@ class XRPBlocksApp {
   }
 
   _generateCode() {
+    if (!this.workspace || !this._pythonGenerator) return '';
+
     try {
-      if (!this._pythonGenerator) return '';
+      // Find the start block
+      const startBlocks = this.workspace.getBlocksByType('xrp_start', false);
+      let code = '';
       
-      let code = this._pythonGenerator.workspaceToCode(this.workspace);
-
-      // Build the preamble: always include XRP import, plus any
-      // additional imports added by generators (e.g., 'import time')
-      const imports = ['from XRPLib.defaults import *'];
-
-      // Collect any definitions the generators added
-      const defs = this._pythonGenerator.definitions_ || {};
-      for (const [key, value] of Object.entries(defs)) {
-        if (key !== 'xrp_import' && !imports.includes(value)) {
-          imports.push(value);
-        }
+      if (startBlocks.length > 0) {
+        // Generate code starting from the xrp_start block
+        const startBlock = startBlocks[0];
+        this._pythonGenerator.init(this.workspace);
+        code = this._pythonGenerator.blockToCode(startBlock);
+        code = this._pythonGenerator.finish(code);
       }
 
-      const preamble = imports.join('\n') + '\n\n';
-      code = preamble + code;
+      // Prepend imports if we generated any actual code
+      if (code.trim()) {
+        const cleaned = code.replace(/^\n+/, '').replace(/\n+$/, '');
+        code = 'from XRPLib.defaults import *\n\n' + cleaned;
+      }
 
       this.pythonPanel?.update(code);
       return code;
@@ -169,6 +233,18 @@ class XRPBlocksApp {
   // ── UI Components ──
 
   _initUI() {
+    // Apply translations to DOM elements
+    this._applyLanguageToDOM();
+
+    // Language dropdown selection
+    const selectLang = document.getElementById('select-lang');
+    if (selectLang) {
+      selectLang.value = this.lang;
+      selectLang.addEventListener('change', (e) => {
+        this._switchLanguage(e.target.value);
+      });
+    }
+
     // Python preview panel
     const pythonEl = document.getElementById('python-code');
     this.pythonPanel = new PythonPanel(pythonEl);
@@ -192,7 +268,7 @@ class XRPBlocksApp {
     // Copy button
     document.getElementById('btn-copy-code')?.addEventListener('click', async () => {
       const success = await this.pythonPanel.copyToClipboard();
-      if (success) this._showToast('Code copied!');
+      if (success) this._showToast(Blockly.Msg['MSG_COPIED'] || 'Code copied!');
     });
 
     // Console clear
@@ -211,7 +287,7 @@ class XRPBlocksApp {
     // Check WebSerial support
     if (!XRPSerial.isSupported()) {
       this.toolbar.setConnected(false);
-      document.getElementById('btn-connect').title = 'WebSerial not supported — use Chrome or Edge';
+      document.getElementById('btn-connect').title = Blockly.Msg['MSG_NOT_SUPPORTED'] || 'WebSerial not supported — use Chrome or Edge';
     }
   }
 
@@ -315,13 +391,13 @@ class XRPBlocksApp {
   _initSerial() {
     this.serial.onConnect = () => {
       this.toolbar.setConnected(true);
-      this.consolePanel.appendSystem('✓ Connected to XRP');
+      this.consolePanel.appendSystem(Blockly.Msg['MSG_CONNECTED'] || '✓ Connected to XRP');
     };
 
     this.serial.onDisconnect = () => {
       this.toolbar.setConnected(false);
       this.toolbar.setRunning(false);
-      this.consolePanel.appendSystem('✗ Disconnected from XRP');
+      this.consolePanel.appendSystem(Blockly.Msg['MSG_DISCONNECTED'] || '✗ Disconnected from XRP');
     };
 
     this.serial.onData = (text) => {
@@ -340,7 +416,7 @@ class XRPBlocksApp {
       try {
         await this.serial.connect();
       } catch (err) {
-        this._showToast('Failed to connect: ' + err.message, 'error');
+        this._showToast((Blockly.Msg['MSG_CONNECT_FAILED'] || 'Failed to connect: ') + err.message, 'error');
       }
     }
   }
@@ -348,7 +424,7 @@ class XRPBlocksApp {
   async _handleRun() {
     const code = this._generateCode();
     if (!code.trim()) {
-      this._showToast('No code to run — add some blocks first!', 'error');
+      this._showToast(Blockly.Msg['MSG_NO_CODE'] || 'No code to run — add some blocks first!', 'error');
       return;
     }
 
@@ -356,13 +432,13 @@ class XRPBlocksApp {
     document.querySelector('[data-tab="console"]')?.click();
 
     this.toolbar.setRunning(true);
-    this.consolePanel.appendSystem('▶ Running program...');
+    this.consolePanel.appendSystem(Blockly.Msg['MSG_RUNNING'] || '▶ Running program...');
 
     try {
       await this.serial.runProgram(code);
     } catch (err) {
-      this.consolePanel.appendError(`Run error: ${err.message}`);
-      this._showToast('Failed to run: ' + err.message, 'error');
+      this.consolePanel.appendError(`${Blockly.Msg['MSG_RUN_FAILED'] || 'Run error: '}${err.message}`);
+      this._showToast((Blockly.Msg['MSG_RUN_FAILED'] || 'Run error: ') + err.message, 'error');
     }
 
     // After a short delay, set running to false
@@ -375,7 +451,7 @@ class XRPBlocksApp {
   async _handleStop() {
     try {
       await this.serial.stopExecution();
-      this.consolePanel.appendSystem('⏹ Program stopped');
+      this.consolePanel.appendSystem(Blockly.Msg['MSG_STOPPED'] || '⏹ Program stopped');
       this.toolbar.setRunning(false);
     } catch (err) {
       this.consolePanel.appendError(`Stop error: ${err.message}`);
@@ -550,7 +626,8 @@ class XRPBlocksApp {
 }
 
 // ── Boot ──
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const app = new XRPBlocksApp();
+  await app.loadLanguage();
   app.init();
 });

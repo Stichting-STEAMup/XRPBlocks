@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>XRP Blocks — Block Programming for XRP Robots</title>
+  <title>XRP Blocks</title>
   <meta name="description"
     content="A beginner-friendly block programming IDE for XRP robots. Drag and drop blocks to program your robot — no typing required!">
 
@@ -19,8 +19,6 @@
   <script src="js/vendor/blockly/blockly_compressed.js"></script>
   <script src="js/vendor/blockly/blocks_compressed.js"></script>
   <script src="js/vendor/blockly/python_compressed.js"></script>
-  <script src="js/vendor/blockly/msg/en.js"></script>
-
   <!-- App (ES module) -->
   <script type="module" src="js/app.js"></script>
 </head>
@@ -40,11 +38,12 @@
       <!-- Connection status -->
       <div class="connection-status">
         <span class="connection-status__dot" id="connection-dot"></span>
-        <span id="connection-text">Disconnected</span>
+        <span id="connection-text" data-i18n="UI_DISCONNECTED">Disconnected</span>
       </div>
 
       <!-- Connect button -->
-      <button id="btn-connect" class="toolbar__btn toolbar__btn--connect" data-tooltip="Connect to your XRP robot">
+      <button id="btn-connect" class="toolbar__btn toolbar__btn--connect" data-tooltip="Connect to your XRP robot"
+        data-i18n-tooltip="TIP_CONNECT">
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
           stroke-linecap="round" stroke-linejoin="round">
           <circle cx="10" cy="7" r="1" />
@@ -55,48 +54,60 @@
           <path d="m10 14 5 2 3.5-3.5" />
           <path d="m18 12 1-1 1 1-1 1Z" />
         </svg>
-        <span class="btn-label">Connect XRP</span>
+        <span class="btn-label" data-i18n="UI_CONNECT">Connect XRP</span>
       </button>
 
       <!-- Run button -->
-      <button id="btn-run" class="toolbar__btn toolbar__btn--run" disabled data-tooltip="Run your program on the XRP">
+      <button id="btn-run" class="toolbar__btn toolbar__btn--run" disabled data-tooltip="Run your program on the XRP"
+        data-i18n-tooltip="TIP_RUN">
         <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
           <polygon points="6,3 20,12 6,21" />
         </svg>
-        <span class="btn-label">Run</span>
+        <span class="btn-label" data-i18n="UI_RUN">Run</span>
       </button>
 
       <!-- Stop button (hidden by default) -->
-      <button id="btn-stop" class="toolbar__btn toolbar__btn--stop" data-tooltip="Stop the running program">
+      <button id="btn-stop" class="toolbar__btn toolbar__btn--stop" data-tooltip="Stop the running program"
+        data-i18n-tooltip="TIP_STOP">
         <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
           <rect x="4" y="4" width="16" height="16" rx="2" />
         </svg>
-        <span class="btn-label">Stop</span>
+        <span class="btn-label" data-i18n="UI_STOP">Stop</span>
       </button>
 
       <div class="toolbar__spacer"></div>
 
       <!-- Save -->
-      <button id="btn-save" class="toolbar__btn toolbar__btn--secondary" data-tooltip="Save your project">
+      <button id="btn-save" class="toolbar__btn toolbar__btn--secondary" data-tooltip="Save your project"
+        data-i18n-tooltip="TIP_SAVE">
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round">
           <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
           <polyline points="17 21 17 13 7 13 7 21" />
           <polyline points="7 3 7 8 15 8" />
         </svg>
-        <span class="btn-label">Save</span>
+        <span class="btn-label" data-i18n="UI_SAVE">Save</span>
       </button>
 
       <!-- Load -->
-      <button id="btn-load" class="toolbar__btn toolbar__btn--secondary" data-tooltip="Load a saved project">
+      <button id="btn-load" class="toolbar__btn toolbar__btn--secondary" data-tooltip="Load a saved project"
+        data-i18n-tooltip="TIP_LOAD">
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
           stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
           <polyline points="7 10 12 15 17 10" />
           <line x1="12" y1="15" x2="12" y2="3" />
         </svg>
-        <span class="btn-label">Load</span>
+        <span class="btn-label" data-i18n="UI_LOAD">Load</span>
       </button>
+
+      <div class="toolbar__divider"></div>
+
+      <!-- Language selector -->
+      <select id="select-lang" class="toolbar__select" aria-label="Select Language">
+        <option value="en">EN</option>
+        <option value="nl">NL</option>
+      </select>
     </header>
 
     <!-- ═══════════ Main Workspace ═══════════ -->
@@ -130,14 +141,16 @@
 
         <!-- Python actions -->
         <div class="bottom-panel__actions" id="python-actions" style="display:flex">
-          <button class="bottom-panel__action-btn" id="btn-copy-code" data-tooltip="Copy Python code">
+          <button class="bottom-panel__action-btn" id="btn-copy-code" data-tooltip="Copy Python code"
+            data-i18n-tooltip="TIP_COPY">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
               stroke-linejoin="round">
               <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
               <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
             </svg>
           </button>
-          <button class="bottom-panel__action-btn" id="btn-collapse-panel" data-tooltip="Collapse panel">
+          <button class="bottom-panel__action-btn" id="btn-collapse-panel" data-tooltip="Collapse panel"
+            data-i18n-tooltip="TIP_COLLAPSE">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
               stroke-linejoin="round">
               <polyline points="6 15 12 9 18 15" />
@@ -147,14 +160,16 @@
 
         <!-- Console actions -->
         <div class="bottom-panel__actions" id="console-actions" style="display:none">
-          <button class="bottom-panel__action-btn" id="btn-clear-console" data-tooltip="Clear console">
+          <button class="bottom-panel__action-btn" id="btn-clear-console" data-tooltip="Clear console"
+            data-i18n-tooltip="TIP_CLEAR">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
               stroke-linejoin="round">
               <polyline points="3 6 5 6 21 6" />
               <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
             </svg>
           </button>
-          <button class="bottom-panel__action-btn" id="btn-collapse-panel-2" data-tooltip="Collapse panel">
+          <button class="bottom-panel__action-btn" id="btn-collapse-panel-2" data-tooltip="Collapse panel"
+            data-i18n-tooltip="TIP_COLLAPSE">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
               stroke-linejoin="round">
               <polyline points="6 15 12 9 18 15" />

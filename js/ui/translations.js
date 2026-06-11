@@ -1,0 +1,277 @@
+/**
+ * XRP Blocks — Translation Strings
+ * Contains English (en) and Dutch (nl) translations.
+ */
+
+export const XRP_TRANSLATIONS = {
+  en: {
+    // Directions
+    XRP_LEFT: 'left',
+    XRP_RIGHT: 'right',
+
+    // Categories
+    CAT_EVENTS: 'Events',
+    CAT_DRIVE: 'Drive',
+    CAT_MOTORS: 'Motors',
+    CAT_SERVO: 'Servo',
+    CAT_SENSORS: 'Sensors',
+    CAT_BOARD: 'Board',
+    CAT_LOGIC: 'Logic',
+    CAT_LOOPS: 'Loops',
+    CAT_MATH: 'Math',
+    CAT_TEXT: 'Text',
+    CAT_VARIABLES: 'Variables',
+    CAT_FUNCTIONS: 'Functions',
+
+    // UI Buttons and labels
+    UI_CONNECT: 'Connect XRP',
+    UI_DISCONNECT: 'Disconnect',
+    UI_RUN: 'Run',
+    UI_STOP: 'Stop',
+    UI_SAVE: 'Save',
+    UI_LOAD: 'Load',
+    UI_DISCONNECTED: 'Disconnected',
+    UI_CONNECTED: 'Connected',
+
+    // Tooltips
+    TIP_CONNECT: 'Connect to your XRP robot',
+    TIP_RUN: 'Run your program on the XRP',
+    TIP_STOP: 'Stop the running program',
+    TIP_SAVE: 'Save your project',
+    TIP_LOAD: 'Load a saved project',
+    TIP_COPY: 'Copy Python code',
+    TIP_CLEAR: 'Clear console',
+    TIP_COLLAPSE: 'Collapse panel',
+    TIP_EXPAND: 'Expand panel',
+
+    // Toasts and console messages
+    MSG_COPIED: 'Code copied!',
+    MSG_NO_CODE: 'No code to run — add some blocks first!',
+    MSG_RUNNING: '▶ Running program...',
+    MSG_CONNECTED: '✓ Connected to XRP',
+    MSG_DISCONNECTED: '✗ Disconnected from XRP',
+    MSG_CONNECT_FAILED: 'Failed to connect: ',
+    MSG_RUN_FAILED: 'Run error: ',
+    MSG_NOT_SUPPORTED: 'WebSerial not supported — use Chrome or Edge',
+    MSG_STOPPED: '⏹ Program stopped',
+
+    // Events (Start) Block
+    XRP_START: 'when program starts',
+    XRP_START_TOOLTIP: 'The starting point for the program.',
+
+    // Drivetrain Blocks
+    XRP_DRIVE_STRAIGHT: 'drive straight %1 cm',
+    XRP_DRIVE_STRAIGHT_TOOLTIP: 'Drive the robot straight. Positive = forward, negative = backward.',
+    XRP_DRIVE_STRAIGHT_EFFORT: 'drive straight %1 cm at %2 % effort',
+    XRP_DRIVE_STRAIGHT_EFFORT_TOOLTIP: 'Drive straight a distance at a specific effort (0–100%).',
+    XRP_DRIVE_TURN: 'turn %1 degrees',
+    XRP_DRIVE_TURN_TOOLTIP: 'Turn the robot. Positive = right, negative = left.',
+    XRP_DRIVE_TURN_EFFORT: 'turn %1 degrees at %2 % effort',
+    XRP_DRIVE_TURN_EFFORT_TOOLTIP: 'Turn a specific angle at a specific effort (0–100%).',
+    XRP_DRIVE_STOP: 'stop driving',
+    XRP_DRIVE_STOP_TOOLTIP: 'Stop the robot immediately.',
+    XRP_DRIVE_SET_EFFORT: 'set drive effort left %1 right %2',
+    XRP_DRIVE_SET_EFFORT_TOOLTIP: 'Set left and right motor effort directly (-1 to 1).',
+    XRP_DRIVE_SET_SPEED: 'set drive speed left %1 right %2',
+    XRP_DRIVE_SET_SPEED_TOOLTIP: 'Set the speed of the left and right motors.',
+    XRP_DRIVE_ARCADE: 'arcade drive speed %1 turn %2',
+    XRP_DRIVE_ARCADE_TOOLTIP: 'Drive using arcade style: forward/backward speed and turning.',
+    XRP_DRIVE_LEFT_ENCODER: 'left encoder position',
+    XRP_DRIVE_LEFT_ENCODER_TOOLTIP: 'Get the current position of the left wheel encoder.',
+    XRP_DRIVE_RIGHT_ENCODER: 'right encoder position',
+    XRP_DRIVE_RIGHT_ENCODER_TOOLTIP: 'Get the current position of the right wheel encoder.',
+    XRP_DRIVE_RESET_ENCODERS: 'reset drive encoders',
+    XRP_DRIVE_RESET_ENCODERS_TOOLTIP: 'Reset both wheel encoder positions to zero.',
+
+    // Motors Blocks
+    XRP_MOTOR_SET_EFFORT: 'set motor %1 effort %2',
+    XRP_MOTOR_SET_EFFORT_TOOLTIP: 'Set motor effort (-1 to 1).',
+    XRP_MOTOR_SET_SPEED: 'set motor %1 speed %2',
+    XRP_MOTOR_SET_SPEED_TOOLTIP: 'Set motor speed.',
+    XRP_MOTOR_GET_POSITION: 'motor %1 position',
+    XRP_MOTOR_GET_POSITION_TOOLTIP: 'Get the motor encoder position.',
+    XRP_MOTOR_GET_SPEED: 'motor %1 speed',
+    XRP_MOTOR_GET_SPEED_TOOLTIP: 'Get the motor speed.',
+    XRP_MOTOR_RESET_ENCODER: 'reset motor %1 encoder',
+    XRP_MOTOR_RESET_ENCODER_TOOLTIP: 'Reset the motor encoder to zero.',
+    XRP_MOTOR_BRAKE: 'brake motor %1',
+    XRP_MOTOR_BRAKE_TOOLTIP: 'Brake the motor.',
+    XRP_MOTOR_COAST: 'coast motor %1',
+    XRP_MOTOR_COAST_TOOLTIP: 'Coast the motor.',
+
+    // Servo Blocks
+    XRP_SERVO_SET_ANGLE: 'set %1 angle %2 degrees',
+    XRP_SERVO_SET_ANGLE_TOOLTIP: 'Set servo angle (0 to 180).',
+    XRP_SERVO_FREE: 'free servo %1',
+    XRP_SERVO_FREE_TOOLTIP: 'Free the servo (turn off holding effort).',
+
+    // Sensors Blocks
+    XRP_DISTANCE_SENSOR: 'distance sensor distance (cm)',
+    XRP_DISTANCE_SENSOR_TOOLTIP: 'Get the distance in cm from the ultrasonic sensor.',
+    XRP_LINE_GET_LEFT: 'line sensor left reflectance',
+    XRP_LINE_GET_LEFT_TOOLTIP: 'Get reflectance value of the left reflectance sensor (0 to 1).',
+    XRP_LINE_GET_RIGHT: 'line sensor right reflectance',
+    XRP_LINE_GET_RIGHT_TOOLTIP: 'Get reflectance value of the right reflectance sensor (0 to 1).',
+    XRP_IMU_GET_YAW: 'gyro yaw (degrees)',
+    XRP_IMU_GET_YAW_TOOLTIP: 'Get robot yaw angle in degrees.',
+    XRP_IMU_GET_PITCH: 'gyro pitch (degrees)',
+    XRP_IMU_GET_PITCH_TOOLTIP: 'Get robot pitch angle in degrees.',
+    XRP_IMU_GET_ROLL: 'gyro roll (degrees)',
+    XRP_IMU_GET_ROLL_TOOLTIP: 'Get robot roll angle in degrees.',
+    XRP_IMU_CALIBRATE: 'gyro calibrate',
+    XRP_IMU_CALIBRATE_TOOLTIP: 'Calibrate the IMU. Keep the robot completely still during calibration.',
+    XRP_BUTTON_IS_PRESSED: 'button is pressed',
+    XRP_BUTTON_IS_PRESSED_TOOLTIP: 'Returns true if the onboard button is currently pressed.',
+    XRP_WAIT_FOR_BUTTON: 'wait for button press',
+    XRP_WAIT_FOR_BUTTON_TOOLTIP: 'Wait until the onboard user button is pressed.',
+
+    // Board Blocks
+    XRP_LED_ON: 'turn LED on',
+    XRP_LED_ON_TOOLTIP: 'Turn the onboard green LED on.',
+    XRP_LED_OFF: 'turn LED off',
+    XRP_LED_OFF_TOOLTIP: 'Turn the onboard green LED off.',
+    XRP_LED_BLINK: 'blink LED %1 times with %2 s delay',
+    XRP_LED_BLINK_TOOLTIP: 'Blink the onboard green LED.',
+    XRP_RGB_LED: 'set RGB LED red %1 green %2 blue %3',
+    XRP_RGB_LED_TOOLTIP: 'Set the onboard RGB LED color (0 to 255).',
+    XRP_WAIT_SECONDS: 'wait %1 seconds',
+    XRP_WAIT_SECONDS_TOOLTIP: 'Pause execution for the specified time.',
+    XRP_PRINT: 'print %1',
+    XRP_PRINT_TOOLTIP: 'Print a message to the console.'
+  },
+  nl: {
+    // Directions
+    XRP_LEFT: 'links',
+    XRP_RIGHT: 'rechts',
+
+    // Categories
+    CAT_EVENTS: 'Gebeurtenissen',
+    CAT_DRIVE: 'Aandrijving',
+    CAT_MOTORS: 'Motoren',
+    CAT_SERVO: 'Servo',
+    CAT_SENSORS: 'Sensoren',
+    CAT_BOARD: 'Printplaat',
+    CAT_LOGIC: 'Logica',
+    CAT_LOOPS: 'Lussen',
+    CAT_MATH: 'Rekenen',
+    CAT_TEXT: 'Tekst',
+    CAT_VARIABLES: 'Variabelen',
+    CAT_FUNCTIONS: 'Functies',
+
+    // UI Buttons and labels
+    UI_CONNECT: 'Verbind XRP',
+    UI_DISCONNECT: 'Verbreek verbinding',
+    UI_RUN: 'Start',
+    UI_STOP: 'Stop',
+    UI_SAVE: 'Opslaan',
+    UI_LOAD: 'Laden',
+    UI_DISCONNECTED: 'Niet verbonden',
+    UI_CONNECTED: 'Verbonden',
+
+    // Tooltips
+    TIP_CONNECT: 'Verbind met de XRP robot',
+    TIP_RUN: 'Voer het programma uit op de XRP',
+    TIP_STOP: 'Stop het actieve programma',
+    TIP_SAVE: 'Sla je project op',
+    TIP_LOAD: 'Laad een opgeslagen project',
+    TIP_COPY: 'Kopieer Python code',
+    TIP_CLEAR: 'Console leegmaken',
+    TIP_COLLAPSE: 'Paneel inklappen',
+    TIP_EXPAND: 'Paneel uitklappen',
+
+    // Toasts and console messages
+    MSG_COPIED: 'Code gekopieerd!',
+    MSG_NO_CODE: 'Geen code om uit te voeren — voeg eerst blokken toe!',
+    MSG_RUNNING: '▶ Programma uitvoeren...',
+    MSG_CONNECTED: '✓ Verbonden met XRP',
+    MSG_DISCONNECTED: '✗ Verbinding met XRP verbroken',
+    MSG_CONNECT_FAILED: 'Verbinding mislukt: ',
+    MSG_RUN_FAILED: 'Fout bij uitvoeren: ',
+    MSG_NOT_SUPPORTED: 'WebSerial niet ondersteund — gebruik Chrome of Edge',
+    MSG_STOPPED: '⏹ Programma gestopt',
+
+    // Events (Start) Block
+    XRP_START: 'wanneer het programma start',
+    XRP_START_TOOLTIP: 'Het startpunt van het programma.',
+
+    // Drivetrain Blocks
+    XRP_DRIVE_STRAIGHT: 'rij rechtdoor %1 cm',
+    XRP_DRIVE_STRAIGHT_TOOLTIP: 'Laat de robot rechtdoor rijden. Positief = vooruit, negatief = achteruit.',
+    XRP_DRIVE_STRAIGHT_EFFORT: 'rij rechtdoor %1 cm met %2 % vermogen',
+    XRP_DRIVE_STRAIGHT_EFFORT_TOOLTIP: 'Rij een afstand rechtdoor met een specifiek vermogen (0–100%).',
+    XRP_DRIVE_TURN: 'draai %1 graden',
+    XRP_DRIVE_TURN_TOOLTIP: 'Draai de robot. Positief = rechtsom, negatief = linksom.',
+    XRP_DRIVE_TURN_EFFORT: 'draai %1 graden met %2 % vermogen',
+    XRP_DRIVE_TURN_EFFORT_TOOLTIP: 'Draai een specifieke hoek met een specifiek vermogen (0–100%).',
+    XRP_DRIVE_STOP: 'stop met rijden',
+    XRP_DRIVE_STOP_TOOLTIP: 'Stop de robot direct.',
+    XRP_DRIVE_SET_EFFORT: 'stel rijvermogen in links %1 rechts %2',
+    XRP_DRIVE_SET_EFFORT_TOOLTIP: 'Stel het vermogen van de linker- en rechter motor direct in (-1 tot 1).',
+    XRP_DRIVE_SET_SPEED: 'stel rijsnelheid in links %1 rechts %2',
+    XRP_DRIVE_SET_SPEED_TOOLTIP: 'Stel de snelheid van de linker- en rechtermotoren in.',
+    XRP_DRIVE_ARCADE: 'arcade besturing snelheid %1 sturen %2',
+    XRP_DRIVE_ARCADE_TOOLTIP: 'Rij in arcade-stijl: vooruit/achteruit snelheid en sturen.',
+    XRP_DRIVE_LEFT_ENCODER: 'linker encoder positie',
+    XRP_DRIVE_LEFT_ENCODER_TOOLTIP: 'Vraag de huidige positie van de linker wiel-encoder op.',
+    XRP_DRIVE_RIGHT_ENCODER: 'rechter encoder positie',
+    XRP_DRIVE_RIGHT_ENCODER_TOOLTIP: 'Vraag de huidige positie van de rechter wiel-encoder op.',
+    XRP_DRIVE_RESET_ENCODERS: 'reset encoders',
+    XRP_DRIVE_RESET_ENCODERS_TOOLTIP: 'Stel beide wiel-encoders in op nul.',
+
+    // Motors Blocks
+    XRP_MOTOR_SET_EFFORT: 'stel motor %1 vermogen in %2',
+    XRP_MOTOR_SET_EFFORT_TOOLTIP: 'Stel het motorvermogen in (-1 tot 1).',
+    XRP_MOTOR_SET_SPEED: 'stel motor %1 snelheid in %2',
+    XRP_MOTOR_SET_SPEED_TOOLTIP: 'Stel de motorsnelheid in.',
+    XRP_MOTOR_GET_POSITION: 'motor %1 positie',
+    XRP_MOTOR_GET_POSITION_TOOLTIP: 'Vraag de motor encoderpositie op.',
+    XRP_MOTOR_GET_SPEED: 'motor %1 snelheid',
+    XRP_MOTOR_GET_SPEED_TOOLTIP: 'Vraag de motorsnelheid op.',
+    XRP_MOTOR_RESET_ENCODER: 'reset motor %1 encoder',
+    XRP_MOTOR_RESET_ENCODER_TOOLTIP: 'Stel de motor encoder in op nul.',
+    XRP_MOTOR_BRAKE: 'rem motor %1',
+    XRP_MOTOR_BRAKE_TOOLTIP: 'Rem de motor.',
+    XRP_MOTOR_COAST: 'uitrollen motor %1',
+    XRP_MOTOR_COAST_TOOLTIP: 'Laat de motor uitrollen.',
+
+    // Servo Blocks
+    XRP_SERVO_SET_ANGLE: 'zet %1 hoek naar %2 graden',
+    XRP_SERVO_SET_ANGLE_TOOLTIP: 'Stel de servo-hoek in (0 tot 180).',
+    XRP_SERVO_FREE: 'servo %1 vrijgeven',
+    XRP_SERVO_FREE_TOOLTIP: 'Geef de servo vrij (schakel vasthoudkracht uit).',
+
+    // Sensors Blocks
+    XRP_DISTANCE_SENSOR: 'afstandssensor afstand (cm)',
+    XRP_DISTANCE_SENSOR_TOOLTIP: 'Vraag de afstand in cm van de ultrasone sensor op.',
+    XRP_LINE_GET_LEFT: 'lijnsensor links reflectie',
+    XRP_LINE_GET_LEFT_TOOLTIP: 'Vraag de reflectiewaarde van de linker reflectiesensor op (0 tot 1).',
+    XRP_LINE_GET_RIGHT: 'lijnsensor rechts reflectie',
+    XRP_LINE_GET_RIGHT_TOOLTIP: 'Vraag de reflectiewaarde van de rechter reflectiesensor op (0 tot 1).',
+    XRP_IMU_GET_YAW: 'gyro yaw (graden)',
+    XRP_IMU_GET_YAW_TOOLTIP: 'Vraag de gierhoek yaw van de robot op.',
+    XRP_IMU_GET_PITCH: 'gyro pitch (graden)',
+    XRP_IMU_GET_PITCH_TOOLTIP: 'Vraag de stampen pitch hoek van de robot op.',
+    XRP_IMU_GET_ROLL: 'gyro roll (graden)',
+    XRP_IMU_GET_ROLL_TOOLTIP: 'Vraag de rollen roll hoek van de robot op.',
+    XRP_IMU_CALIBRATE: 'gyro kalibreren',
+    XRP_IMU_CALIBRATE_TOOLTIP: 'Kalibreer de IMU. Houd de robot volledig stil tijdens het kalibreren.',
+    XRP_BUTTON_IS_PRESSED: 'knop is ingedrukt',
+    XRP_BUTTON_IS_PRESSED_TOOLTIP: 'Geeft waar (true) terug als de knop op de robot is ingedrukt.',
+    XRP_WAIT_FOR_BUTTON: 'wacht op knopdruk',
+    XRP_WAIT_FOR_BUTTON_TOOLTIP: 'Wacht totdat de knop op de robot is ingedrukt.',
+
+    // Board Blocks
+    XRP_LED_ON: 'schakel LED in',
+    XRP_LED_ON_TOOLTIP: 'Zet de groene LED op de robot aan.',
+    XRP_LED_OFF: 'schakel LED uit',
+    XRP_LED_OFF_TOOLTIP: 'Zet de groene LED op de robot uit.',
+    XRP_LED_BLINK: 'knipper LED %1 keer met %2 s pauze',
+    XRP_LED_BLINK_TOOLTIP: 'Laat de groene LED op de robot knipperen.',
+    XRP_RGB_LED: 'stel RGB LED in rood %1 groen %2 blauw %3',
+    XRP_RGB_LED_TOOLTIP: 'Stel de kleur van de RGB LED op de robot in (0 tot 255).',
+    XRP_WAIT_SECONDS: 'wacht %1 seconden',
+    XRP_WAIT_SECONDS_TOOLTIP: 'Wacht een aantal seconden voordat het programma verdergaat.',
+    XRP_PRINT: 'print %1',
+    XRP_PRINT_TOOLTIP: 'Print een bericht naar de console.'
+  }
+};
