@@ -81,12 +81,17 @@ class XRPBlocksApp {
     }
 
     this.lang = localStorage.getItem('xrp_blocks_language') || defaultLang;
+
+    // Set the HTML lang attribute dynamically
+    document.documentElement.setAttribute('lang', this.lang);
+
     try {
       await this._loadScript(`js/vendor/blockly/msg/${this.lang}.js`);
     } catch (err) {
       console.warn(`Failed to load language script for ${this.lang}, falling back to English.`, err);
       this.lang = 'en';
       await this._loadScript('js/vendor/blockly/msg/en.js');
+      document.documentElement.setAttribute('lang', 'en');
     }
     const trans = XRP_TRANSLATIONS[this.lang] || XRP_TRANSLATIONS['en'];
     for (const key in trans) {
