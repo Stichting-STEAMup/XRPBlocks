@@ -1,0 +1,85 @@
+/**
+ * XRP Blocks — Toolbar UI Component
+ */
+
+export class Toolbar {
+  constructor({ onConnect, onRun, onStop, onSave, onLoad }) {
+    this.onConnect = onConnect;
+    this.onRun = onRun;
+    this.onStop = onStop;
+    this.onSave = onSave;
+    this.onLoad = onLoad;
+
+    this._connected = false;
+    this._running = false;
+
+    this._bindElements();
+    this._bindEvents();
+  }
+
+  _bindElements() {
+    this.connectBtn = document.getElementById('btn-connect');
+    this.runBtn = document.getElementById('btn-run');
+    this.stopBtn = document.getElementById('btn-stop');
+    this.saveBtn = document.getElementById('btn-save');
+    this.loadBtn = document.getElementById('btn-load');
+    this.statusDot = document.getElementById('connection-dot');
+    this.statusText = document.getElementById('connection-text');
+  }
+
+  _bindEvents() {
+    this.connectBtn?.addEventListener('click', () => this.onConnect?.());
+    this.runBtn?.addEventListener('click', () => this.onRun?.());
+    this.stopBtn?.addEventListener('click', () => this.onStop?.());
+    this.saveBtn?.addEventListener('click', () => this.onSave?.());
+    this.loadBtn?.addEventListener('click', () => this.onLoad?.());
+  }
+
+  setConnected(connected) {
+    this._connected = connected;
+
+    if (connected) {
+      this.connectBtn.textContent = '';
+      this.connectBtn.innerHTML = `
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
+          <line x1="12" y1="2" x2="12" y2="12"/>
+        </svg>
+        <span class="btn-label">Disconnect</span>
+      `;
+      this.connectBtn.classList.add('connected');
+      this.statusDot?.classList.add('connected');
+      if (this.statusText) this.statusText.textContent = 'Connected';
+      this.runBtn.disabled = false;
+    } else {
+      this.connectBtn.innerHTML = `
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
+          <polyline points="16 3 12 7 8 3"/>
+        </svg>
+        <span class="btn-label">Connect XRP</span>
+      `;
+      this.connectBtn.classList.remove('connected');
+      this.statusDot?.classList.remove('connected');
+      if (this.statusText) this.statusText.textContent = 'Disconnected';
+      this.runBtn.disabled = true;
+    }
+
+    this._updateRunStopVisibility();
+  }
+
+  setRunning(running) {
+    this._running = running;
+    this._updateRunStopVisibility();
+  }
+
+  _updateRunStopVisibility() {
+    if (this._running) {
+      this.runBtn.style.display = 'none';
+      this.stopBtn.classList.add('visible');
+    } else {
+      this.runBtn.style.display = '';
+      this.stopBtn.classList.remove('visible');
+    }
+  }
+}
