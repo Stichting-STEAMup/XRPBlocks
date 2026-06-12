@@ -4,18 +4,14 @@ A browser-based block-programming IDE for the [XRP robot](https://experiencerobo
 
 Built on [Blockly](https://developers.google.com/blockly), XRP Blocks lets students drag and drop blocks to write real MicroPython programs and run them directly on the robot over USB using the WebSerial API — no installation required.
 
----
-
 ## Features
 
 - 🧩 **Block-based programming** — Blockly workspace with XRP-specific categories (Drive, Motors, Servo, Sensors, Board) plus standard logic, loops, math, text, variables, and functions
 - 🐍 **Live Python preview** — generated MicroPython code updates in real time as blocks are placed
 - 🤖 **Direct robot connection** — run programs on the XRP over WebSerial (Chrome / Edge)
-- 📖 **Procedural tutorials** — step-by-step lesson system with toolbox filtering and pre-built templates (MakeCode-style)
+- 📖 **Procedural tutorials** — step-by-step lesson system with toolbox filtering and pre-built templates
 - 🌐 **Multilingual** — English and Dutch UI, easily extensible
 - 💾 **Save / Load** — export and import workspace JSON files
-
----
 
 ## Getting Started
 
@@ -24,8 +20,6 @@ XRP Blocks runs entirely in the browser — no build step needed.
 1. Open `index.html` in Chrome or Edge (WebSerial requires a Chromium-based browser)
 2. Click **Connect XRP** to pair with your robot over USB
 3. Drag blocks onto the canvas and click **Run** to execute the program
-
----
 
 ## Lesson System
 
@@ -46,37 +40,6 @@ Example lessons are in [`examples/lessons/`](examples/lessons/):
 | [`les-02-vierkant.json`](examples/lessons/les-02-vierkant.json) | Dutch | ⭐⭐ Intermediate | Driving in a square |
 | [`les-03-obstakel.json`](examples/lessons/les-03-obstakel.json) | Dutch | ⭐⭐⭐ Advanced | Obstacle avoidance with sensors |
 
----
-
-## Project Structure
-
-```
-xrp-ide/
-├── index.html              # App entry point
-├── css/
-│   └── index.css           # All styles
-├── js/
-│   ├── app.js              # Main application
-│   ├── blockly/
-│   │   ├── toolbox.js      # Category & block definitions
-│   │   ├── theme.js        # Blockly visual theme
-│   │   ├── blocks/         # Custom XRP block definitions
-│   │   └── generators/     # Python code generators
-│   ├── serial/
-│   │   └── webserial.js    # WebSerial communication
-│   └── ui/
-│       ├── toolbar.js      # Toolbar component
-│       ├── lesson-manager.js  # Tutorial/lesson system
-│       ├── python-panel.js # Python preview panel
-│       ├── console-panel.js   # Serial console panel
-│       └── translations.js # EN / NL strings
-├── docs/
-│   └── lessons.md          # Lesson format specification
-└── examples/
-    └── lessons/            # Example lesson files
-```
-
----
 
 ## Browser Support
 
@@ -84,8 +47,6 @@ WebSerial is required to connect to the robot. Use **Chrome 89+** or **Edge 89+*
 
 The IDE itself (without robot connection) works in any modern browser.
 
----
-
 ## License
 
-MIT — see [LICENSE](LICENSE)
+[MIT](LICENSE)

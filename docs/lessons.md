@@ -1,9 +1,6 @@
 # XRP Blocks — Lesson Format Specification
 
 This document describes the JSON format used to author procedural tutorials for the XRP Blocks IDE.
-It is intended to be readable by both humans and language models generating lesson content.
-
----
 
 ## Overview
 
@@ -14,8 +11,6 @@ When loaded, the IDE:
 2. Restricts the toolbox to the categories and blocks listed in `toolbox` (if provided)
 3. Displays the first step of the lesson in a panel above the workspace
 4. Lets the student navigate steps with **Previous** and **Next** buttons
-
----
 
 ## Top-Level Structure
 
@@ -36,9 +31,7 @@ When loaded, the IDE:
 | `template` | object | ❌ No | Blockly workspace serialization. Loaded into the workspace when the lesson starts. |
 
 > [!NOTE]
-> **Content is never translated by the IDE.** The `title` and `steps` are authored directly in the target language. Only IDE chrome (button labels, tooltips, dialog text) is translated.
-
----
+> **Content is never translated by the IDE.** The `title` and `steps` are authored directly in the target language.
 
 ## `steps` — Step Content
 
@@ -59,8 +52,6 @@ Each step is a string that may contain inline HTML for formatting:
 - Use `<code>` for literal values (numbers, code snippets)
 - Use `<i>` for positional hints (e.g. *in* the loop, *after* the block)
 - Use an emoji at the start of the final step as a completion signal (e.g. 🎉)
-
----
 
 ## `toolbox` — Toolbox Filtering
 
@@ -106,7 +97,6 @@ Use the stable English category keys below (independent of the UI language):
 
 This shows three categories. `Events` shows all its blocks. `Drive` shows only two specific blocks. `Board` shows only `xrp_wait_seconds`. All other categories are hidden.
 
----
 
 ## `template` — Pre-built Workspace
 
@@ -143,7 +133,7 @@ You can also write the template JSON by hand. The format follows the Blockly ser
 ```
 
 > [!IMPORTANT]
-> Every block `id` must be unique within the template. Use a consistent naming scheme such as `lesson_name_block_role` (e.g. `les2_drive1`, `les2_turn1`).
+> Every block `id` must be unique within the template. Use a consistent naming scheme such as `lesson_name_block_role` (e.g. `lesson2_drive1`, `lesson2_turn1`).
 
 ### Block serialization cheat sheet
 
@@ -371,8 +361,6 @@ Use `"next"` to chain statement blocks. Use `"inputs"` for value sockets. Use `"
   }
 }
 ```
-
----
 
 ## Tips for LLM-generated Lessons
 
