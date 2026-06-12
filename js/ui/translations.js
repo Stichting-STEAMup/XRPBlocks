@@ -32,6 +32,7 @@ export const XRP_TRANSLATIONS = {
     UI_LOAD: 'Load',
     UI_DISCONNECTED: 'Disconnected',
     UI_CONNECTED: 'Connected',
+    UI_LESSON: 'Lesson',
 
     // Tooltips
     TIP_CONNECT: 'Connect to your XRP robot',
@@ -43,6 +44,7 @@ export const XRP_TRANSLATIONS = {
     TIP_CLEAR: 'Clear console',
     TIP_COLLAPSE: 'Collapse panel',
     TIP_EXPAND: 'Expand panel',
+    TIP_LESSON: 'Load a lesson file',
 
     // Toasts and console messages
     MSG_COPIED: 'Code copied!',
@@ -54,6 +56,23 @@ export const XRP_TRANSLATIONS = {
     MSG_RUN_FAILED: 'Run error: ',
     MSG_NOT_SUPPORTED: 'WebSerial not supported — use Chrome or Edge',
     MSG_STOPPED: '⏹ Program stopped',
+    MSG_LESSON_LOADED: '📖 Lesson loaded: ',
+    MSG_LESSON_INVALID: 'Invalid lesson file — must have a steps array.',
+    MSG_LESSON_FILE_ERROR: 'Failed to read lesson file',
+
+    // Lesson panel UI
+    LESSON_STEP_OF: 'Step %1 of %2',
+    LESSON_BTN_PREV: 'Previous',
+    LESSON_BTN_NEXT: 'Next',
+    LESSON_BTN_FINISH: 'Finish',
+    LESSON_ARIA_EXIT: 'Exit lesson',
+    LESSON_TIP_EXIT: 'Exit lesson',
+
+    // Lesson exit confirmation dialog
+    LESSON_CONFIRM_TITLE: 'Exit lesson?',
+    LESSON_CONFIRM_BODY: 'Are you sure you want to exit the lesson? Your progress will not be saved.',
+    LESSON_CONFIRM_YES: 'Exit lesson',
+    LESSON_CONFIRM_NO: 'Keep going',
 
     // Events (Start) Block
     XRP_START: 'when program starts',
@@ -167,6 +186,7 @@ export const XRP_TRANSLATIONS = {
     UI_LOAD: 'Laden',
     UI_DISCONNECTED: 'Niet verbonden',
     UI_CONNECTED: 'Verbonden',
+    UI_LESSON: 'Les',
 
     // Tooltips
     TIP_CONNECT: 'Verbind met de XRP robot',
@@ -178,6 +198,7 @@ export const XRP_TRANSLATIONS = {
     TIP_CLEAR: 'Console leegmaken',
     TIP_COLLAPSE: 'Paneel inklappen',
     TIP_EXPAND: 'Paneel uitklappen',
+    TIP_LESSON: 'Laad een lesbestand',
 
     // Toasts and console messages
     MSG_COPIED: 'Code gekopieerd!',
@@ -189,6 +210,23 @@ export const XRP_TRANSLATIONS = {
     MSG_RUN_FAILED: 'Fout bij uitvoeren: ',
     MSG_NOT_SUPPORTED: 'WebSerial niet ondersteund — gebruik Chrome of Edge',
     MSG_STOPPED: '⏹ Programma gestopt',
+    MSG_LESSON_LOADED: '📖 Les geladen: ',
+    MSG_LESSON_INVALID: 'Ongeldig lesbestand — moet een stappen-array bevatten.',
+    MSG_LESSON_FILE_ERROR: 'Kan het lesbestand niet lezen',
+
+    // Lesson panel UI
+    LESSON_STEP_OF: 'Stap %1 van %2',
+    LESSON_BTN_PREV: 'Vorige',
+    LESSON_BTN_NEXT: 'Volgende',
+    LESSON_BTN_FINISH: 'Afronden',
+    LESSON_ARIA_EXIT: 'Les afsluiten',
+    LESSON_TIP_EXIT: 'Les afsluiten',
+
+    // Lesson exit confirmation dialog
+    LESSON_CONFIRM_TITLE: 'Les afsluiten?',
+    LESSON_CONFIRM_BODY: 'Weet je zeker dat je de les wilt afsluiten? Je voortgang wordt niet opgeslagen.',
+    LESSON_CONFIRM_YES: 'Les afsluiten',
+    LESSON_CONFIRM_NO: 'Doorgaan',
 
     // Events (Start) Block
     XRP_START: 'wanneer het programma start',

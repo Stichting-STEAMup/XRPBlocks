@@ -591,12 +591,20 @@ class XRPBlocksApp {
         const lesson = JSON.parse(text);
         const ok = this.lessonManager.load(lesson);
         if (ok) {
-          this._showToast(`📖 Lesson loaded: ${lesson.title || 'Untitled'}`);
+          this._showToast(
+            (Blockly.Msg['MSG_LESSON_LOADED'] || '📖 Lesson loaded: ') + (lesson.title || 'Untitled')
+          );
         } else {
-          this._showToast('Invalid lesson file — must have a steps array.', 'error');
+          this._showToast(
+            Blockly.Msg['MSG_LESSON_INVALID'] || 'Invalid lesson file — must have a steps array.',
+            'error'
+          );
         }
       } catch (err) {
-        this._showToast('Failed to read lesson file', 'error');
+        this._showToast(
+          Blockly.Msg['MSG_LESSON_FILE_ERROR'] || 'Failed to read lesson file',
+          'error'
+        );
       }
     };
     input.click();

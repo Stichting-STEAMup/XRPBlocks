@@ -104,12 +104,14 @@
       <div class="toolbar__divider"></div>
 
       <!-- Load Lesson (debug) -->
-      <button id="btn-load-lesson" class="toolbar__btn toolbar__btn--lesson" data-tooltip="Load a lesson file (debug)">
+      <button id="btn-load-lesson" class="toolbar__btn toolbar__btn--lesson"
+        data-tooltip="Load a lesson file"
+        data-i18n-tooltip="TIP_LESSON">
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
           <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
         </svg>
-        <span class="btn-label">Lesson</span>
+        <span class="btn-label" data-i18n="UI_LESSON">Lesson</span>
       </button>
 
       <div class="toolbar__divider"></div>
@@ -137,7 +139,10 @@
           </div>
           <div class="lesson-panel__header-right">
             <span class="lesson-panel__step-count">Step 1 of 1</span>
-            <button id="btn-lesson-close" class="lesson-panel__close" aria-label="Exit lesson" data-tooltip="Exit lesson">
+            <button id="btn-lesson-close" class="lesson-panel__close"
+              aria-label="Exit lesson"
+              data-tooltip="Exit lesson"
+              data-i18n-tooltip="LESSON_TIP_EXIT">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"/>
                 <line x1="6" y1="6" x2="18" y2="18"/>
@@ -160,10 +165,10 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="15 18 9 12 15 6"/>
             </svg>
-            <span>Previous</span>
+            <span data-i18n="LESSON_BTN_PREV">Previous</span>
           </button>
           <button id="btn-lesson-next" class="lesson-panel__btn lesson-panel__btn--next">
-            <span>Next</span>
+            <span data-i18n="LESSON_BTN_NEXT">Next</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
               <polyline points="9 18 15 12 9 6"/>
             </svg>
