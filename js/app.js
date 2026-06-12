@@ -273,6 +273,7 @@ class XRPBlocksApp {
     // Lesson manager
     this.lessonManager = new LessonManager({
       onToolboxChange: (filter) => this._applyFilteredToolbox(filter),
+      onLoadTemplate: (state) => this._loadTemplateWorkspace(state),
       onResize: () => Blockly.svgResize(this.workspace),
     });
 
@@ -618,6 +619,31 @@ class XRPBlocksApp {
     if (!this.workspace) return;
     const toolbox = getFilteredToolbox(toolboxFilter);
     this.workspace.updateToolbox(toolbox);
+  }
+
+  /**
+   * Load a lesson template state into the Blockly workspace.
+   * Clears the current workspace first, then loads the template.
+   * Always ensures an xrp_start block is present afterwards.
+   * @param {Object} state - Blockly serialization workspace state
+   */
+  _loadTemplateWorkspace(state) {
+    if (!this.workspace) return;
+    try {
+      Blockly.serialization.workspaces.load(state, this.workspace);
+    } catch (err) {
+      console.error('[XRPBlocks] Failed to load lesson template:', err);
+    }
+
+    // Guarantee there is always a start block
+    const topBlocks = this.workspace.getTopBlocks();
+    const hasStart = topBlocks.some(b => b.type === 'xrp_start');
+    if (!hasStart) {
+      const startBlock = this.workspace.newBlock('xrp_start');
+      startBlock.initSvg();
+      startBlock.render();
+      startBlock.moveBy(50, 50);
+    }
   }
 
   // ── Resize ──

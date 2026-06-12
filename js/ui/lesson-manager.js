@@ -24,10 +24,13 @@ export class LessonManager {
   /**
    * @param {Object} options
    * @param {Function} options.onToolboxChange - Called with (toolboxFilter) when lesson loads/exits.
+   * @param {Function} options.onLoadTemplate  - Called with (templateState) when lesson has a template.
+   *   Should load the state into the Blockly workspace.
    * @param {Function} options.onResize - Called after panel shows/hides so Blockly can resize.
    */
-  constructor({ onToolboxChange, onResize }) {
+  constructor({ onToolboxChange, onLoadTemplate, onResize }) {
     this.onToolboxChange = onToolboxChange;
+    this.onLoadTemplate = onLoadTemplate;
     this.onResize = onResize;
 
     this.currentLesson = null;
@@ -56,7 +59,13 @@ export class LessonManager {
     this.currentLesson = lesson;
     this.currentStep = 0;
 
+    // Apply toolbox filter
     this.onToolboxChange?.(lesson.toolbox || null);
+
+    // Load template workspace state if provided
+    if (lesson.template && typeof lesson.template === 'object') {
+      this.onLoadTemplate?.(lesson.template);
+    }
 
     this._render();
     this._showPanel();
