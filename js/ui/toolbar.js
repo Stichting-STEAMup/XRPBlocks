@@ -3,12 +3,13 @@
  */
 
 export class Toolbar {
-  constructor({ onConnect, onRun, onStop, onSave, onLoad }) {
+  constructor({ onConnect, onRun, onStop, onSave, onLoad, onLoadLesson }) {
     this.onConnect = onConnect;
     this.onRun = onRun;
     this.onStop = onStop;
     this.onSave = onSave;
     this.onLoad = onLoad;
+    this.onLoadLesson = onLoadLesson;
 
     this._connected = false;
     this._running = false;
@@ -23,6 +24,7 @@ export class Toolbar {
     this.stopBtn = document.getElementById('btn-stop');
     this.saveBtn = document.getElementById('btn-save');
     this.loadBtn = document.getElementById('btn-load');
+    this.loadLessonBtn = document.getElementById('btn-load-lesson');
     this.statusDot = document.getElementById('connection-dot');
     this.statusText = document.getElementById('connection-text');
   }
@@ -33,6 +35,7 @@ export class Toolbar {
     this.stopBtn?.addEventListener('click', () => this.onStop?.());
     this.saveBtn?.addEventListener('click', () => this.onSave?.());
     this.loadBtn?.addEventListener('click', () => this.onLoad?.());
+    this.loadLessonBtn?.addEventListener('click', () => this.onLoadLesson?.());
   }
 
   setConnected(connected) {
