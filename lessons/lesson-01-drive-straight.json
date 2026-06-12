@@ -1,0 +1,15 @@
+{
+  "title": "Lesson 1: Drive Straight",
+  "steps": [
+    "👋 Welcome to your first XRP lesson! In this lesson, you'll make the XRP robot drive straight forward.",
+    "Look at the toolbox on the left. You'll see a <b>Drive</b> category — click it to open it.",
+    "Find the <b>Drive Straight</b> block and drag it inside the <b>Start</b> block on the canvas.",
+    "The block has a <b>distance</b> input. Change it to <code>20</code> to drive 20 centimetres forward.",
+    "🎉 Great job! Connect your XRP robot and press <b>Run</b> to see it drive straight. Well done!"
+  ],
+  "toolbox": {
+    "Events": [],
+    "Drive": ["xrp_drive_straight", "xrp_drive_stop"],
+    "Board": ["xrp_wait_seconds"]
+  }
+}

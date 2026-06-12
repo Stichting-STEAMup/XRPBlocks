@@ -4,7 +4,7 @@
  */
 
 import { createXRPTheme } from './blockly/theme.js';
-import { getToolboxDefinition } from './blockly/toolbox.js';
+import { getToolboxDefinition, getFilteredToolbox } from './blockly/toolbox.js';
 import { registerDrivetrainBlocks } from './blockly/blocks/drivetrain.js';
 import { registerMotorBlocks } from './blockly/blocks/motors.js';
 import { registerServoBlocks } from './blockly/blocks/servo.js';
@@ -21,6 +21,7 @@ import { Toolbar } from './ui/toolbar.js';
 import { PythonPanel } from './ui/python-panel.js';
 import { ConsolePanel } from './ui/console-panel.js';
 import { XRP_TRANSLATIONS } from './ui/translations.js';
+import { LessonManager } from './ui/lesson-manager.js';
 
 class XRPBlocksApp {
   constructor() {
@@ -29,6 +30,7 @@ class XRPBlocksApp {
     this.pythonPanel = null;
     this.consolePanel = null;
     this.toolbar = null;
+    this.lessonManager = null;
     this._pythonGenerator = null;
     this.lang = 'en';
   }
@@ -265,6 +267,13 @@ class XRPBlocksApp {
       onStop: () => this._handleStop(),
       onSave: () => this._saveWorkspace(),
       onLoad: () => this._loadFromFile(),
+      onLoadLesson: () => this._loadLessonFromFile(),
+    });
+
+    // Lesson manager
+    this.lessonManager = new LessonManager({
+      onToolboxChange: (filter) => this._applyFilteredToolbox(filter),
+      onResize: () => Blockly.svgResize(this.workspace),
     });
 
     // Bottom panel tabs
@@ -566,6 +575,41 @@ class XRPBlocksApp {
       }
     };
     input.click();
+  }
+
+  // ── Lesson Support ──
+
+  _loadLessonFromFile() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.onchange = async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      try {
+        const text = await file.text();
+        const lesson = JSON.parse(text);
+        const ok = this.lessonManager.load(lesson);
+        if (ok) {
+          this._showToast(`📖 Lesson loaded: ${lesson.title || 'Untitled'}`);
+        } else {
+          this._showToast('Invalid lesson file — must have a steps array.', 'error');
+        }
+      } catch (err) {
+        this._showToast('Failed to read lesson file', 'error');
+      }
+    };
+    input.click();
+  }
+
+  /**
+   * Re-inject the Blockly toolbox with a filtered or full definition.
+   * @param {Object|null} toolboxFilter - Lesson toolbox filter, or null to restore full.
+   */
+  _applyFilteredToolbox(toolboxFilter) {
+    if (!this.workspace) return;
+    const toolbox = getFilteredToolbox(toolboxFilter);
+    this.workspace.updateToolbox(toolbox);
   }
 
   // ── Resize ──

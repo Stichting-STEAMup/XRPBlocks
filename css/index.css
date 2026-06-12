@@ -866,3 +866,232 @@ button {
 .toast.toast--error {
   background: var(--color-danger);
 }
+
+/* ============================================================
+   Lesson / Tutorial Panel
+   ============================================================ */
+
+/* Toolbar: Lesson button */
+.toolbar__btn--lesson {
+  background: linear-gradient(135deg, #7C4DFF, #6C63FF);
+  color: #fff;
+  border: none;
+}
+
+.toolbar__btn--lesson:hover {
+  background: linear-gradient(135deg, #6C3FE8, #5A52E0);
+}
+
+/* Lesson panel container */
+.lesson-panel {
+  background: linear-gradient(135deg, #f5f3ff 0%, #eef2ff 100%);
+  border-bottom: 2px solid #c4b5fd;
+  box-shadow: 0 4px 16px rgba(108, 99, 255, 0.10);
+  flex-shrink: 0;
+  overflow: hidden;
+  /* Slide transition */
+  max-height: 220px;
+  opacity: 1;
+  transition:
+    max-height 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.lesson-panel--hidden {
+  max-height: 0 !important;
+  opacity: 0 !important;
+  border-bottom-width: 0;
+  pointer-events: none;
+}
+
+/* Header row: title + step count + close */
+.lesson-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px 4px 16px;
+  gap: var(--space-md);
+}
+
+.lesson-panel__title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.lesson-panel__book-icon {
+  width: 18px;
+  height: 18px;
+  color: #7C4DFF;
+  flex-shrink: 0;
+}
+
+.lesson-panel__title {
+  font-weight: 800;
+  font-size: 14px;
+  color: #3d2c8d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lesson-panel__header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.lesson-panel__step-count {
+  font-size: 12px;
+  font-weight: 700;
+  color: #7C4DFF;
+  background: rgba(124, 77, 255, 0.10);
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.lesson-panel__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  background: rgba(124, 77, 255, 0.10);
+  color: #7C4DFF;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.lesson-panel__close:hover {
+  background: rgba(124, 77, 255, 0.22);
+  transform: scale(1.1);
+}
+
+.lesson-panel__close svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Progress bar */
+.lesson-panel__progress {
+  height: 4px;
+  background: rgba(124, 77, 255, 0.15);
+  margin: 6px 16px 0 16px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.lesson-panel__progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7C4DFF, #a78bfa);
+  border-radius: var(--radius-full);
+  transition: width 350ms cubic-bezier(0.4, 0, 0.2, 1);
+  width: 0%;
+}
+
+/* Step text area */
+.lesson-panel__step-text {
+  flex: 1;
+  padding: 10px 18px 6px 18px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.55;
+  color: #2D3142;
+  overflow-y: auto;
+  /* Fade-in animation on step change */
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.lesson-panel__step-text.lesson-step--animating {
+  animation: stepFadeIn 220ms ease forwards;
+}
+
+@keyframes stepFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Navigation buttons */
+.lesson-panel__nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 16px 10px 16px;
+  gap: var(--space-md);
+}
+
+.lesson-panel__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 18px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.lesson-panel__btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.lesson-panel__btn--prev {
+  background: rgba(124, 77, 255, 0.10);
+  color: #7C4DFF;
+}
+
+.lesson-panel__btn--prev:hover:not(:disabled) {
+  background: rgba(124, 77, 255, 0.20);
+  transform: translateX(-2px);
+}
+
+.lesson-panel__btn--prev:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.lesson-panel__btn--next {
+  background: linear-gradient(135deg, #7C4DFF, #6C63FF);
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(108, 99, 255, 0.30);
+}
+
+.lesson-panel__btn--next:hover {
+  background: linear-gradient(135deg, #6C3FE8, #5A52E0);
+  transform: translateX(2px);
+  box-shadow: 0 4px 12px rgba(108, 99, 255, 0.40);
+}
+
+/* "Finish" variant for the last step */
+.lesson-panel__btn--finish {
+  background: linear-gradient(135deg, #4CAF50, #43A047) !important;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.30) !important;
+}
+
+.lesson-panel__btn--finish:hover {
+  background: linear-gradient(135deg, #43A047, #388E3C) !important;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.40) !important;
+  transform: translateX(2px);
+}

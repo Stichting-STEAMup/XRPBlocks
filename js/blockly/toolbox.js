@@ -1,6 +1,9 @@
 /**
  * XRP Blocks — Toolbox Definition
  * Category-based toolbox with XRP-specific and standard Blockly categories.
+ *
+ * Each category has a stable `categoryKey` (English, no spaces) used by
+ * the lesson system to filter categories regardless of UI language.
  */
 
 export function getToolboxDefinition() {
@@ -10,6 +13,7 @@ export function getToolboxDefinition() {
       // ── XRP Categories ──
       {
         kind: 'category',
+        categoryKey: 'Events',
         name: Blockly.Msg['CAT_EVENTS'] || 'Events',
         categorystyle: 'events_category',
         cssConfig: { icon: 'cat-icon cat-icon-events' },
@@ -19,6 +23,7 @@ export function getToolboxDefinition() {
       },
       {
         kind: 'category',
+        categoryKey: 'Drive',
         name: Blockly.Msg['CAT_DRIVE'] || 'Drive',
         categorystyle: 'drive_category',
         cssConfig: { icon: 'cat-icon cat-icon-drive' },
@@ -88,6 +93,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
+        categoryKey: 'Motors',
         name: Blockly.Msg['CAT_MOTORS'] || 'Motors',
         categorystyle: 'motor_category',
         cssConfig: { icon: 'cat-icon cat-icon-motors' },
@@ -117,6 +123,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
+        categoryKey: 'Servo',
         name: Blockly.Msg['CAT_SERVO'] || 'Servo',
         categorystyle: 'servo_category',
         cssConfig: { icon: 'cat-icon cat-icon-servo' },
@@ -134,6 +141,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
+        categoryKey: 'Sensors',
         name: Blockly.Msg['CAT_SENSORS'] || 'Sensors',
         categorystyle: 'sensor_category',
         cssConfig: { icon: 'cat-icon cat-icon-sensors' },
@@ -155,6 +163,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
+        categoryKey: 'Board',
         name: Blockly.Msg['CAT_BOARD'] || 'Board',
         categorystyle: 'board_category',
         cssConfig: { icon: 'cat-icon cat-icon-board' },
@@ -202,6 +211,7 @@ export function getToolboxDefinition() {
       // ── Standard Blockly Categories ──
       {
         kind: 'category',
+        categoryKey: 'Logic',
         name: Blockly.Msg['CAT_LOGIC'] || 'Logic',
         categorystyle: 'logic_category',
         cssConfig: { icon: 'cat-icon cat-icon-logic' },
@@ -222,6 +232,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
+        categoryKey: 'Loops',
         name: Blockly.Msg['CAT_LOOPS'] || 'Loops',
         categorystyle: 'loop_category',
         cssConfig: { icon: 'cat-icon cat-icon-loops' },
@@ -251,6 +262,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
+        categoryKey: 'Math',
         name: Blockly.Msg['CAT_MATH'] || 'Math',
         categorystyle: 'math_category',
         cssConfig: { icon: 'cat-icon cat-icon-math' },
@@ -278,6 +290,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
+        categoryKey: 'Text',
         name: Blockly.Msg['CAT_TEXT'] || 'Text',
         categorystyle: 'text_category',
         cssConfig: { icon: 'cat-icon cat-icon-text' },
@@ -294,6 +307,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
+        categoryKey: 'Variables',
         name: Blockly.Msg['CAT_VARIABLES'] || 'Variables',
         categorystyle: 'variable_category',
         cssConfig: { icon: 'cat-icon cat-icon-variables' },
@@ -302,6 +316,7 @@ export function getToolboxDefinition() {
 
       {
         kind: 'category',
+        categoryKey: 'Functions',
         name: Blockly.Msg['CAT_FUNCTIONS'] || 'Functions',
         categorystyle: 'procedure_category',
         cssConfig: { icon: 'cat-icon cat-icon-functions' },
@@ -309,4 +324,72 @@ export function getToolboxDefinition() {
       },
     ],
   };
+}
+
+/**
+ * Returns a filtered toolbox definition for a lesson.
+ *
+ * @param {Object|null} toolboxFilter - The `toolbox` field from a lesson JSON.
+ *   - null / undefined / {} → return full toolbox (no filtering)
+ *   - { "Drive": [], "Events": [] } → only those categories, all their blocks
+ *   - { "Drive": ["xrp_drive_straight"] } → only that category with only that block
+ * @returns {Object} Blockly toolbox definition
+ */
+export function getFilteredToolbox(toolboxFilter) {
+  const full = getToolboxDefinition();
+
+  // No filter — return the full toolbox
+  if (!toolboxFilter || Object.keys(toolboxFilter).length === 0) {
+    return full;
+  }
+
+  const filteredContents = [];
+
+  for (const item of full.contents) {
+    // Pass through separators between categories
+    if (item.kind === 'sep' && !item.categoryKey) {
+      filteredContents.push(item);
+      continue;
+    }
+
+    // Skip categories not mentioned in the filter
+    if (item.kind === 'category') {
+      const key = item.categoryKey;
+      if (!key || !(key in toolboxFilter)) continue;
+
+      const allowedBlocks = toolboxFilter[key];
+
+      // Empty array → include all blocks in this category as-is
+      if (!allowedBlocks || allowedBlocks.length === 0) {
+        filteredContents.push(item);
+        continue;
+      }
+
+      // Non-empty array → filter the category's contents to matching block types
+      // Keep `sep` items that appear between included blocks
+      const filteredCategoryContents = [];
+      let lastWasBlock = false;
+      let pendingSep = null;
+
+      for (const entry of (item.contents || [])) {
+        if (entry.kind === 'sep') {
+          // Hold the sep — only emit it if a block follows
+          pendingSep = entry;
+        } else if (entry.kind === 'block' && allowedBlocks.includes(entry.type)) {
+          if (pendingSep && lastWasBlock) {
+            filteredCategoryContents.push(pendingSep);
+          }
+          filteredCategoryContents.push(entry);
+          pendingSep = null;
+          lastWasBlock = true;
+        }
+      }
+
+      if (filteredCategoryContents.length > 0) {
+        filteredContents.push({ ...item, contents: filteredCategoryContents });
+      }
+    }
+  }
+
+  return { kind: 'categoryToolbox', contents: filteredContents };
 }
