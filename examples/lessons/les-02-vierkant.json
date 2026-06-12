@@ -9,10 +9,17 @@
     "🎉 Super gedaan! Je robot rijdt nu een perfect vierkant. Uitdaging: verander de hoek naar <code>120</code> graden en herhaal <code>3</code> keer — wat voor figuur krijg je dan?"
   ],
   "toolbox": {
-    "Events": [],
-    "Drive": ["xrp_drive_straight", "xrp_drive_turn", "xrp_drive_stop"],
-    "Loops": ["controls_repeat_ext"],
-    "Math": ["math_number"]
+    "Drive": [
+      "xrp_drive_straight",
+      "xrp_drive_turn",
+      "xrp_drive_stop"
+    ],
+    "Loops": [
+      "controls_repeat_ext"
+    ],
+    "Math": [
+      "math_number"
+    ]
   },
   "template": {
     "blocks": {
@@ -32,7 +39,9 @@
                   "shadow": {
                     "type": "math_number",
                     "id": "les2_dist1",
-                    "fields": { "NUM": 30 }
+                    "fields": {
+                      "NUM": 30
+                    }
                   }
                 }
               },
@@ -45,7 +54,9 @@
                       "shadow": {
                         "type": "math_number",
                         "id": "les2_angle1",
-                        "fields": { "NUM": 90 }
+                        "fields": {
+                          "NUM": 90
+                        }
                       }
                     }
                   }

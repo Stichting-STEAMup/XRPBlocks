@@ -9,9 +9,13 @@
     "🎉 Geweldig! Je eerste programma is klaar. Verbind de robot en druk op <b>Start</b> om te zien hoe hij rijdt. Wat gebeurt er als je de afstand verandert naar 50 cm?"
   ],
   "toolbox": {
-    "Events": [],
-    "Drive": ["xrp_drive_straight", "xrp_drive_stop"],
-    "Board": ["xrp_wait_seconds"]
+    "Drive": [
+      "xrp_drive_straight",
+      "xrp_drive_stop"
+    ],
+    "Board": [
+      "xrp_wait_seconds"
+    ]
   },
   "template": {
     "blocks": {

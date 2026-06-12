@@ -10,13 +10,26 @@
     "🎉 Knap gedaan! Je robot detecteert nu zelfstandig obstakels. Dit principe — een sensor die bepaalt wanneer een lus stopt — heet een <b>sensor-gestuurde lus</b>. Zelfrijdende auto's werken op precies hetzelfde idee!"
   ],
   "toolbox": {
-    "Events": [],
-    "Drive": ["xrp_drive_straight", "xrp_drive_stop"],
-    "Sensors": ["xrp_distance_sensor"],
-    "Board": ["xrp_wait_seconds", "xrp_print"],
-    "Logic": ["logic_compare"],
-    "Loops": ["controls_whileUntil"],
-    "Text": ["text"]
+    "Drive": [
+      "xrp_drive_straight",
+      "xrp_drive_stop"
+    ],
+    "Sensors": [
+      "xrp_distance_sensor"
+    ],
+    "Board": [
+      "xrp_wait_seconds",
+      "xrp_print"
+    ],
+    "Logic": [
+      "logic_compare"
+    ],
+    "Loops": [
+      "controls_whileUntil"
+    ],
+    "Text": [
+      "text"
+    ]
   },
   "template": {
     "blocks": {
@@ -31,13 +44,17 @@
             "block": {
               "type": "controls_whileUntil",
               "id": "les3_while",
-              "fields": { "MODE": "WHILE" },
+              "fields": {
+                "MODE": "WHILE"
+              },
               "inputs": {
                 "BOOL": {
                   "block": {
                     "type": "logic_compare",
                     "id": "les3_compare",
-                    "fields": { "OP": "GT" },
+                    "fields": {
+                      "OP": "GT"
+                    },
                     "inputs": {
                       "A": {
                         "block": {
@@ -49,7 +66,9 @@
                         "shadow": {
                           "type": "math_number",
                           "id": "les3_threshold",
-                          "fields": { "NUM": 20 }
+                          "fields": {
+                            "NUM": 20
+                          }
                         }
                       }
                     }
@@ -64,7 +83,9 @@
                         "shadow": {
                           "type": "math_number",
                           "id": "les3_dist",
-                          "fields": { "NUM": 5 }
+                          "fields": {
+                            "NUM": 5
+                          }
                         }
                       }
                     }
