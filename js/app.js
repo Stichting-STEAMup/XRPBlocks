@@ -439,17 +439,19 @@ class XRPBlocksApp {
     this.toolbar.setRunning(true);
     this.consolePanel.appendSystem(Blockly.Msg['MSG_RUNNING'] || '▶ Running program...');
 
-    // Watch for the MicroPython REPL prompt to detect when the program ends
-    this._watchForProgramEnd();
-
     try {
       await this.serial.runProgram(code);
     } catch (err) {
       this.consolePanel.appendError(`${Blockly.Msg['MSG_RUN_FAILED'] || 'Run error: '}${err.message}`);
       this._showToast((Blockly.Msg['MSG_RUN_FAILED'] || 'Run error: ') + err.message, 'error');
       this.toolbar.setRunning(false);
-      this._stopWatchingForProgramEnd();
+      return;
     }
+
+    // runProgram() has returned — the REPL handshake (Ctrl+C / Ctrl+A / Ctrl+B) is
+    // complete and all setup prompts have passed. Only now start watching for the
+    // '>>> ' prompt that signals the user's program actually finished on its own.
+    this._watchForProgramEnd();
   }
 
   async _handleStop() {
