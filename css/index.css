@@ -251,6 +251,34 @@ button {
   box-shadow: none;
 }
 
+/* Deploy button — amber, signals a persistent "save to board" action */
+.toolbar__btn--deploy {
+  background: var(--color-warning);
+  color: var(--color-text-on-accent);
+}
+
+.toolbar__btn--deploy:hover {
+  background: #F57C00;
+}
+
+.toolbar__btn--deploy:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.toolbar__btn--deploy.deploying {
+  opacity: 0.75;
+  cursor: wait;
+  animation: deploy-pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes deploy-pulse {
+  from { opacity: 0.6; }
+  to   { opacity: 1;   }
+}
+
 .toolbar__btn--stop {
   background: var(--color-danger);
   color: var(--color-text-on-accent);

@@ -3,10 +3,11 @@
  */
 
 export class Toolbar {
-  constructor({ onConnect, onRun, onStop, onSave, onLoad, onLoadLesson }) {
+  constructor({ onConnect, onRun, onStop, onDeploy, onSave, onLoad, onLoadLesson }) {
     this.onConnect = onConnect;
     this.onRun = onRun;
     this.onStop = onStop;
+    this.onDeploy = onDeploy;
     this.onSave = onSave;
     this.onLoad = onLoad;
     this.onLoadLesson = onLoadLesson;
@@ -22,6 +23,7 @@ export class Toolbar {
     this.connectBtn = document.getElementById('btn-connect');
     this.runBtn = document.getElementById('btn-run');
     this.stopBtn = document.getElementById('btn-stop');
+    this.deployBtn = document.getElementById('btn-deploy');
     this.saveBtn = document.getElementById('btn-save');
     this.loadBtn = document.getElementById('btn-load');
     this.loadLessonBtn = document.getElementById('btn-load-lesson');
@@ -33,6 +35,7 @@ export class Toolbar {
     this.connectBtn?.addEventListener('click', () => this.onConnect?.());
     this.runBtn?.addEventListener('click', () => this.onRun?.());
     this.stopBtn?.addEventListener('click', () => this.onStop?.());
+    this.deployBtn?.addEventListener('click', () => this.onDeploy?.());
     this.saveBtn?.addEventListener('click', () => this.onSave?.());
     this.loadBtn?.addEventListener('click', () => this.onLoad?.());
     this.loadLessonBtn?.addEventListener('click', () => this.onLoadLesson?.());
@@ -54,6 +57,7 @@ export class Toolbar {
       this.statusDot?.classList.add('connected');
       if (this.statusText) this.statusText.textContent = Blockly.Msg['UI_CONNECTED'] || 'Connected';
       this.runBtn.disabled = false;
+      if (this.deployBtn) this.deployBtn.disabled = false;
     } else {
       this.connectBtn.innerHTML = `
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -71,6 +75,7 @@ export class Toolbar {
       this.statusDot?.classList.remove('connected');
       if (this.statusText) this.statusText.textContent = Blockly.Msg['UI_DISCONNECTED'] || 'Disconnected';
       this.runBtn.disabled = true;
+      if (this.deployBtn) this.deployBtn.disabled = true;
     }
 
     this._updateRunStopVisibility();

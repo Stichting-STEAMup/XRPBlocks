@@ -265,6 +265,7 @@ class XRPBlocksApp {
       onConnect: () => this._handleConnect(),
       onRun: () => this._handleRun(),
       onStop: () => this._handleStop(),
+      onDeploy: () => this._handleDeploy(),
       onSave: () => this._saveWorkspace(),
       onLoad: () => this._loadFromFile(),
       onLoadLesson: () => this._loadLessonFromFile(),
@@ -472,6 +473,39 @@ class XRPBlocksApp {
       this.toolbar.setRunning(false);
     } catch (err) {
       this.consolePanel.appendError(`Stop error: ${err.message}`);
+    }
+  }
+
+  async _handleDeploy() {
+    const code = this._generateCode();
+    if (!code.trim()) {
+      this._showToast(Blockly.Msg['MSG_NO_CODE'] || 'No code to run — add some blocks first!', 'error');
+      return;
+    }
+
+    // Open console so user can see progress
+    this._setPanelState(true, 'console');
+
+    const deployBtn = document.getElementById('btn-deploy');
+    if (deployBtn) {
+      deployBtn.disabled = true;
+      deployBtn.classList.add('deploying');
+    }
+
+    this.consolePanel.appendSystem(Blockly.Msg['MSG_DEPLOYING'] || '⬇ Saving main.py to board...');
+
+    try {
+      await this.serial.uploadFile('main.py', code);
+      this.consolePanel.appendSystem(Blockly.Msg['MSG_DEPLOYED'] || '✓ Deployed! Program will run automatically on power-up.');
+      this._showToast(Blockly.Msg['MSG_DEPLOYED'] || '✓ Deployed to board!');
+    } catch (err) {
+      this.consolePanel.appendError(`${Blockly.Msg['MSG_DEPLOY_FAILED'] || 'Deploy error: '}${err.message}`);
+      this._showToast((Blockly.Msg['MSG_DEPLOY_FAILED'] || 'Deploy error: ') + err.message, 'error');
+    } finally {
+      if (deployBtn) {
+        deployBtn.classList.remove('deploying');
+        deployBtn.disabled = false;
+      }
     }
   }
 
