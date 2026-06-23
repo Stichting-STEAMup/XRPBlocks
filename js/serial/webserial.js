@@ -8,8 +8,6 @@ export class XRPSerial {
     this.port = null;
     this.reader = null;
     this.writer = null;
-    this.readableStreamClosed = null;
-    this.writableStreamClosed = null;
     this.connected = false;
     this.decoder = new TextDecoder();
     this.encoder = new TextEncoder();
@@ -20,8 +18,8 @@ export class XRPSerial {
     this.onData = null;
     this.onError = null;
 
-    // Internal buffer for reading
-    this._readBuffer = '';
+    // Internal flag to stop read loop cleanly
+    this._stopReading = false;
   }
 
   /**
@@ -53,11 +51,12 @@ export class XRPSerial {
       });
 
       this.connected = true;
+      this._stopReading = false;
 
-      // Set up writer
+      // Set up writer — acquire a single writer for the session
       this.writer = this.port.writable.getWriter();
 
-      // Start reading in background
+      // Start reading in background (fire-and-forget, errors handled internally)
       this._startReading();
 
       if (this.onConnect) this.onConnect();
@@ -76,25 +75,34 @@ export class XRPSerial {
    * Disconnect from the XRP robot
    */
   async disconnect() {
-    try {
-      this.connected = false;
+    this.connected = false;
+    this._stopReading = true;
 
-      if (this.reader) {
+    // Cancel and release the reader first so the port can be closed
+    if (this.reader) {
+      try {
         await this.reader.cancel();
-        this.reader = null;
-      }
+      } catch (_) { /* ignore */ }
+      try {
+        this.reader.releaseLock();
+      } catch (_) { /* ignore */ }
+      this.reader = null;
+    }
 
-      if (this.writer) {
-        await this.writer.close();
-        this.writer = null;
-      }
+    // Release writer lock, then close the writable side
+    if (this.writer) {
+      try {
+        this.writer.releaseLock();
+      } catch (_) { /* ignore */ }
+      this.writer = null;
+    }
 
-      if (this.port) {
+    // Close the port
+    if (this.port) {
+      try {
         await this.port.close();
-        this.port = null;
-      }
-    } catch (err) {
-      // Ignore close errors
+      } catch (_) { /* ignore */ }
+      this.port = null;
     }
 
     if (this.onDisconnect) this.onDisconnect();
@@ -116,7 +124,7 @@ export class XRPSerial {
   async interrupt() {
     await this.send('\r\x03\x03');
     // Small delay to let REPL recover
-    await this._delay(100);
+    await this._delay(200);
   }
 
   /**
@@ -125,11 +133,10 @@ export class XRPSerial {
   async enterRawRepl() {
     // Interrupt anything running
     await this.interrupt();
-    await this._delay(100);
 
     // Enter raw REPL mode (Ctrl+A)
     await this.send('\r\x01');
-    await this._delay(100);
+    await this._delay(200);
   }
 
   /**
@@ -137,7 +144,7 @@ export class XRPSerial {
    */
   async exitRawRepl() {
     await this.send('\x02');
-    await this._delay(100);
+    await this._delay(200);
   }
 
   /**
@@ -152,13 +159,14 @@ export class XRPSerial {
       // Enter raw REPL
       await this.enterRawRepl();
 
-      // Send the code
-      // In raw REPL, we send the code followed by Ctrl+D to execute
+      // Send the code followed by Ctrl+D to execute
       await this.send(pythonCode);
       await this._delay(50);
-
-      // Execute (Ctrl+D)
       await this.send('\x04');
+
+      // Give the board a moment to start, then exit raw REPL
+      await this._delay(200);
+      await this.exitRawRepl();
     } catch (err) {
       if (this.onError) this.onError(err);
       throw err;
@@ -186,44 +194,54 @@ export class XRPSerial {
   }
 
   /**
-   * Run code from blocks: upload as main.py then execute
+   * Run code from blocks: execute directly via raw REPL
    */
   async runProgram(pythonCode) {
     if (!this.connected) {
       throw new Error('Not connected to XRP');
     }
 
-    // Execute code directly via raw REPL
     await this.executeCode(pythonCode);
   }
 
   /**
-   * Start reading serial data in the background
+   * Start reading serial data in the background.
+   * Uses a single reader that is held for the entire session.
    */
   async _startReading() {
-    while (this.port && this.port.readable && this.connected) {
-      this.reader = this.port.readable.getReader();
+    if (!this.port || !this.port.readable) return;
+
+    // Acquire a single reader for the whole connection session
+    this.reader = this.port.readable.getReader();
+
+    try {
+      while (!this._stopReading) {
+        let result;
+        try {
+          result = await this.reader.read();
+        } catch (err) {
+          // Read error (e.g. device unplugged)
+          if (this.connected && this.onError) this.onError(err);
+          break;
+        }
+
+        if (result.done) break;
+
+        if (result.value) {
+          const text = this.decoder.decode(result.value);
+          if (this.onData) this.onData(text);
+        }
+      }
+    } finally {
       try {
-        while (true) {
-          const { value, done } = await this.reader.read();
-          if (done) break;
-          if (value) {
-            const text = this.decoder.decode(value);
-            if (this.onData) this.onData(text);
-          }
-        }
-      } catch (err) {
-        if (this.connected) {
-          if (this.onError) this.onError(err);
-        }
-      } finally {
-        if (this.reader) {
-          try {
-            this.reader.releaseLock();
-          } catch (e) {
-            // Ignore
-          }
-        }
+        this.reader.releaseLock();
+      } catch (_) { /* ignore */ }
+
+      // If we exited the loop unexpectedly (device disconnected), trigger disconnect
+      if (this.connected) {
+        this.connected = false;
+        this._stopReading = true;
+        if (this.onDisconnect) this.onDisconnect();
       }
     }
   }
