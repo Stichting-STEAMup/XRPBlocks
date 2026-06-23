@@ -526,16 +526,34 @@ class XRPBlocksApp {
 
     // Buffer incoming data; look for the '>>> ' REPL prompt
     this._replBuffer = '';
+    this._seenExecutionStart = false;
+
+    // Defensive fallback: enable prompt checking after 1.5 seconds regardless
+    this._fallbackTimeout = setTimeout(() => {
+      this._seenExecutionStart = true;
+    }, 1500);
+
     this._replEndHandler = (text) => {
-      this._replBuffer += text;
-      // Keep only the last 16 chars to avoid unbounded growth
-      if (this._replBuffer.length > 16) {
-        this._replBuffer = this._replBuffer.slice(-16);
+      // Check for execution start signatures to clear pre-execution prompts
+      if (!this._seenExecutionStart) {
+        const lower = text.toLowerCase();
+        if (lower.includes('raw repl') || lower.includes('soft reboot') || lower.includes('micropython')) {
+          this._seenExecutionStart = true;
+          this._replBuffer = ''; // Clear any backlog containing pre-execution prompts
+        }
       }
-      if (this._replBuffer.includes('>>> ')) {
-        this._stopWatchingForProgramEnd();
-        this.toolbar.setRunning(false);
-        this.consolePanel.appendSystem(Blockly.Msg['MSG_DONE'] || '✓ Program finished');
+
+      if (this._seenExecutionStart) {
+        this._replBuffer += text;
+        // Keep only the last 16 chars to avoid unbounded growth
+        if (this._replBuffer.length > 16) {
+          this._replBuffer = this._replBuffer.slice(-16);
+        }
+        if (this._replBuffer.includes('>>> ')) {
+          this._stopWatchingForProgramEnd();
+          this.toolbar.setRunning(false);
+          this.consolePanel.appendSystem(Blockly.Msg['MSG_DONE'] || '✓ Program finished');
+        }
       }
     };
 
@@ -548,6 +566,10 @@ class XRPBlocksApp {
   }
 
   _stopWatchingForProgramEnd() {
+    if (this._fallbackTimeout) {
+      clearTimeout(this._fallbackTimeout);
+      this._fallbackTimeout = null;
+    }
     if (!this._replEndHandler) return;
     // Restore the plain data handler
     this.serial.onData = (text) => {
