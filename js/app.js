@@ -265,6 +265,7 @@ class XRPBlocksApp {
       onConnect: () => this._handleConnect(),
       onRun: () => this._handleRun(),
       onStop: () => this._handleStop(),
+      onDeploy: () => this._handleDeploy(),
       onSave: () => this._saveWorkspace(),
       onLoad: () => this._loadFromFile(),
       onLoadLesson: () => this._loadLessonFromFile(),
@@ -475,6 +476,46 @@ class XRPBlocksApp {
     }
   }
 
+  async _handleDeploy() {
+    const code = this._generateCode();
+    if (!code.trim()) {
+      this._showToast(Blockly.Msg['MSG_NO_CODE'] || 'No code to run — add some blocks first!', 'error');
+      return;
+    }
+
+    // Open console so user can see progress
+    this._setPanelState(true, 'console');
+
+    const deployBtn = document.getElementById('btn-deploy');
+    if (deployBtn) {
+      deployBtn.disabled = true;
+      deployBtn.classList.add('deploying');
+    }
+
+    this.consolePanel.appendSystem(Blockly.Msg['MSG_DEPLOYING'] || '⬇ Saving main.py to board...');
+
+    try {
+      await this.serial.uploadFile('main.py', code);
+      this.consolePanel.appendSystem(Blockly.Msg['MSG_DEPLOYED'] || '✓ Deployed! Program will run automatically on power-up.');
+      this._showToast(Blockly.Msg['MSG_DEPLOYED'] || '✓ Deployed to board!');
+
+      // The upload soft-reboots the board to start running main.py immediately.
+      // Update UI state and monitor program completion.
+      this.toolbar.setRunning(true);
+      this.consolePanel.appendSystem(Blockly.Msg['MSG_RUNNING'] || '▶ Running program...');
+      this._watchForProgramEnd();
+    } catch (err) {
+      this.consolePanel.appendError(`${Blockly.Msg['MSG_DEPLOY_FAILED'] || 'Deploy error: '}${err.message}`);
+      this._showToast((Blockly.Msg['MSG_DEPLOY_FAILED'] || 'Deploy error: ') + err.message, 'error');
+      this.toolbar.setRunning(false);
+    } finally {
+      if (deployBtn) {
+        deployBtn.classList.remove('deploying');
+        deployBtn.disabled = false;
+      }
+    }
+  }
+
   /**
    * Install a one-shot listener on the serial data stream that resets the
    * running state when MicroPython prints its REPL prompt, which means the
@@ -485,16 +526,34 @@ class XRPBlocksApp {
 
     // Buffer incoming data; look for the '>>> ' REPL prompt
     this._replBuffer = '';
+    this._seenExecutionStart = false;
+
+    // Defensive fallback: enable prompt checking after 1.5 seconds regardless
+    this._fallbackTimeout = setTimeout(() => {
+      this._seenExecutionStart = true;
+    }, 1500);
+
     this._replEndHandler = (text) => {
-      this._replBuffer += text;
-      // Keep only the last 16 chars to avoid unbounded growth
-      if (this._replBuffer.length > 16) {
-        this._replBuffer = this._replBuffer.slice(-16);
+      // Check for execution start signatures to clear pre-execution prompts
+      if (!this._seenExecutionStart) {
+        const lower = text.toLowerCase();
+        if (lower.includes('raw repl') || lower.includes('soft reboot') || lower.includes('micropython')) {
+          this._seenExecutionStart = true;
+          this._replBuffer = ''; // Clear any backlog containing pre-execution prompts
+        }
       }
-      if (this._replBuffer.includes('>>> ')) {
-        this._stopWatchingForProgramEnd();
-        this.toolbar.setRunning(false);
-        this.consolePanel.appendSystem(Blockly.Msg['MSG_DONE'] || '✓ Program finished');
+
+      if (this._seenExecutionStart) {
+        this._replBuffer += text;
+        // Keep only the last 16 chars to avoid unbounded growth
+        if (this._replBuffer.length > 16) {
+          this._replBuffer = this._replBuffer.slice(-16);
+        }
+        if (this._replBuffer.includes('>>> ')) {
+          this._stopWatchingForProgramEnd();
+          this.toolbar.setRunning(false);
+          this.consolePanel.appendSystem(Blockly.Msg['MSG_DONE'] || '✓ Program finished');
+        }
       }
     };
 
@@ -507,6 +566,10 @@ class XRPBlocksApp {
   }
 
   _stopWatchingForProgramEnd() {
+    if (this._fallbackTimeout) {
+      clearTimeout(this._fallbackTimeout);
+      this._fallbackTimeout = null;
+    }
     if (!this._replEndHandler) return;
     // Restore the plain data handler
     this.serial.onData = (text) => {
