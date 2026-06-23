@@ -498,9 +498,16 @@ class XRPBlocksApp {
       await this.serial.uploadFile('main.py', code);
       this.consolePanel.appendSystem(Blockly.Msg['MSG_DEPLOYED'] || '✓ Deployed! Program will run automatically on power-up.');
       this._showToast(Blockly.Msg['MSG_DEPLOYED'] || '✓ Deployed to board!');
+
+      // The upload soft-reboots the board to start running main.py immediately.
+      // Update UI state and monitor program completion.
+      this.toolbar.setRunning(true);
+      this.consolePanel.appendSystem(Blockly.Msg['MSG_RUNNING'] || '▶ Running program...');
+      this._watchForProgramEnd();
     } catch (err) {
       this.consolePanel.appendError(`${Blockly.Msg['MSG_DEPLOY_FAILED'] || 'Deploy error: '}${err.message}`);
       this._showToast((Blockly.Msg['MSG_DEPLOY_FAILED'] || 'Deploy error: ') + err.message, 'error');
+      this.toolbar.setRunning(false);
     } finally {
       if (deployBtn) {
         deployBtn.classList.remove('deploying');

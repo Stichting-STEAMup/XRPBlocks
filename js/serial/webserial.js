@@ -183,6 +183,20 @@ export class XRPSerial {
   }
 
   /**
+   * Trigger a soft reboot of the MicroPython board
+   */
+  async softReboot() {
+    if (!this.connected) {
+      throw new Error('Not connected to XRP');
+    }
+    // Ensure we are in normal REPL
+    await this.exitRawRepl();
+    // Send Ctrl+D (soft reboot command)
+    await this.send('\x04');
+    await this._delay(200);
+  }
+
+  /**
    * Upload a Python file to the XRP filesystem
    */
   async uploadFile(filename, content) {
@@ -191,6 +205,10 @@ export class XRPSerial {
     const writeCode = `f = open('${filename}', 'w')\nf.write('${escapedContent}')\nf.close()\nprint('File saved: ${filename}')\n`;
 
     await this.executeCode(writeCode);
+
+    if (filename === 'main.py') {
+      await this.softReboot();
+    }
   }
 
   /**
