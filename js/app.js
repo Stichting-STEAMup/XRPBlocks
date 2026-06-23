@@ -443,8 +443,8 @@ class XRPBlocksApp {
       return;
     }
 
-    // Switch to console tab
-    document.querySelector('[data-tab="console"]')?.click();
+    // Always open and switch to the console tab without toggling
+    this._setPanelState(true, 'console');
 
     this.toolbar.setRunning(true);
     this.consolePanel.appendSystem(Blockly.Msg['MSG_RUNNING'] || '▶ Running program...');
@@ -454,23 +454,66 @@ class XRPBlocksApp {
     } catch (err) {
       this.consolePanel.appendError(`${Blockly.Msg['MSG_RUN_FAILED'] || 'Run error: '}${err.message}`);
       this._showToast((Blockly.Msg['MSG_RUN_FAILED'] || 'Run error: ') + err.message, 'error');
+      this.toolbar.setRunning(false);
+      return;
     }
 
-    // After a short delay, set running to false
-    // (in a real implementation, we'd detect when the program finishes)
-    setTimeout(() => {
-      this.toolbar.setRunning(false);
-    }, 2000);
+    // runProgram() has returned — the REPL handshake (Ctrl+C / Ctrl+A / Ctrl+B) is
+    // complete and all setup prompts have passed. Only now start watching for the
+    // '>>> ' prompt that signals the user's program actually finished on its own.
+    this._watchForProgramEnd();
   }
 
   async _handleStop() {
     try {
+      this._stopWatchingForProgramEnd();
       await this.serial.stopExecution();
       this.consolePanel.appendSystem(Blockly.Msg['MSG_STOPPED'] || '⏹ Program stopped');
       this.toolbar.setRunning(false);
     } catch (err) {
       this.consolePanel.appendError(`Stop error: ${err.message}`);
     }
+  }
+
+  /**
+   * Install a one-shot listener on the serial data stream that resets the
+   * running state when MicroPython prints its REPL prompt, which means the
+   * program has finished executing on its own.
+   */
+  _watchForProgramEnd() {
+    this._stopWatchingForProgramEnd(); // clear any previous watcher
+
+    // Buffer incoming data; look for the '>>> ' REPL prompt
+    this._replBuffer = '';
+    this._replEndHandler = (text) => {
+      this._replBuffer += text;
+      // Keep only the last 16 chars to avoid unbounded growth
+      if (this._replBuffer.length > 16) {
+        this._replBuffer = this._replBuffer.slice(-16);
+      }
+      if (this._replBuffer.includes('>>> ')) {
+        this._stopWatchingForProgramEnd();
+        this.toolbar.setRunning(false);
+        this.consolePanel.appendSystem(Blockly.Msg['MSG_DONE'] || '✓ Program finished');
+      }
+    };
+
+    // Chain on top of the existing onData handler
+    const existingOnData = this.serial.onData;
+    this.serial.onData = (text) => {
+      if (existingOnData) existingOnData(text);
+      if (this._replEndHandler) this._replEndHandler(text);
+    };
+  }
+
+  _stopWatchingForProgramEnd() {
+    if (!this._replEndHandler) return;
+    // Restore the plain data handler
+    this.serial.onData = (text) => {
+      this.consolePanel.appendData(text, 'received');
+    };
+    this._replEndHandler = null;
+    this._replBuffer = '';
   }
 
   // ── Live Code Generation ──

@@ -13,10 +13,21 @@ export class ConsolePanel {
    * Append received data to the console
    */
   appendData(text, type = 'received') {
-    const span = document.createElement('span');
-    span.className = `console-${type}`;
-    span.textContent = text;
-    this.container.appendChild(span);
+    // Split on newlines so serial output renders line-by-line
+    const lines = text.split('\n');
+    lines.forEach((line, i) => {
+      if (line.length > 0) {
+        const span = document.createElement('span');
+        span.className = `console-${type}`;
+        span.textContent = line;
+        this.container.appendChild(span);
+      }
+      // Insert a <br> after every segment except the last
+      // (if the chunk ends with \n the last segment is empty, so we get a trailing newline)
+      if (i < lines.length - 1) {
+        this.container.appendChild(document.createElement('br'));
+      }
+    });
 
     if (this._autoScroll) {
       this.container.scrollTop = this.container.scrollHeight;
