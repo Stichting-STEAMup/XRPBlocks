@@ -223,10 +223,11 @@ class XRPBlocksApp {
         code = this._pythonGenerator.finish(code);
       }
 
-      // Prepend imports if we generated any actual code
+      // Prepend selective imports if we generated any actual code
       if (code.trim()) {
         const cleaned = code.replace(/^\n+/, '').replace(/\n+$/, '');
-        code = 'from XRPLib.defaults import *\n\n' + cleaned;
+        const importLine = this._buildImportLine(cleaned);
+        code = importLine + '\n\n' + cleaned;
       }
 
       this.pythonPanel?.update(code);
@@ -235,6 +236,45 @@ class XRPBlocksApp {
       console.error('Code generation error:', err);
       return '';
     }
+  }
+
+  /**
+   * Scan the generated Python code and produce a selective import line that
+   * only pulls in the XRPLib objects that are actually referenced. This
+   * prevents background threads (e.g. in imu.py and encoded_motor.py) from
+   * starting when those objects are not needed by the program.
+   *
+   * @param {string} code - Generated Python code (without the import line)
+   * @returns {string} - e.g. "from XRPLib.defaults import board, drivetrain"
+   */
+  _buildImportLine(code) {
+    // Ordered list of [identifier, regex] pairs.
+    // The regex checks that the identifier appears as a standalone word in the code.
+    const XRPLIB_OBJECTS = [
+      'board',
+      'drivetrain',
+      'left_motor',
+      'right_motor',
+      'motor_three',
+      'motor_four',
+      'imu',
+      'rangefinder',
+      'reflectance',
+      'servo_one',
+      'servo_two',
+    ];
+
+    const needed = XRPLIB_OBJECTS.filter(name => {
+      // Match the identifier as a whole word (not inside another identifier)
+      return new RegExp(`\\b${name}\\b`).test(code);
+    });
+
+    if (needed.length === 0) {
+      // Fallback: no recognised objects — use the safe minimal import
+      return 'from XRPLib.defaults import board';
+    }
+
+    return `from XRPLib.defaults import ${needed.join(', ')}`;
   }
 
   // ── UI Components ──
