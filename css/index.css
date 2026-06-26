@@ -673,6 +673,17 @@ button {
   color: var(--color-text);
 }
 
+/* Active/toggled state (e.g. console auto-scroll on) */
+.bottom-panel__action-btn.is-active {
+  background: rgba(108, 99, 255, 0.12);
+  color: var(--color-primary);
+}
+
+.bottom-panel__action-btn.is-active:hover {
+  background: rgba(108, 99, 255, 0.2);
+  color: var(--color-primary);
+}
+
 .bottom-panel__action-btn svg {
   width: 14px;
   height: 14px;

@@ -258,7 +258,9 @@ class XRPBlocksApp {
 
     // Console panel
     const consoleEl = document.getElementById('console-output');
-    this.consolePanel = new ConsolePanel(consoleEl);
+    this.consolePanel = new ConsolePanel(consoleEl, {
+      onAutoScrollChange: (enabled) => this._updateAutoScrollButton(enabled),
+    });
 
     // Toolbar
     this.toolbar = new Toolbar({
@@ -290,6 +292,17 @@ class XRPBlocksApp {
     // Console clear
     document.getElementById('btn-clear-console')?.addEventListener('click', () => {
       this.consolePanel.clear();
+    });
+
+    // Console copy
+    document.getElementById('btn-copy-console')?.addEventListener('click', async () => {
+      const success = await this.consolePanel.copyToClipboard();
+      if (success) this._showToast(Blockly.Msg['MSG_CONSOLE_COPIED'] || 'Console copied!');
+    });
+
+    // Console auto-scroll toggle
+    document.getElementById('btn-autoscroll')?.addEventListener('click', () => {
+      this.consolePanel.toggleAutoScroll();
     });
 
     // Panel collapse toggle
@@ -332,6 +345,14 @@ class XRPBlocksApp {
         }
       });
     });
+  }
+
+  /** Reflect the console auto-scroll state on its toggle button. */
+  _updateAutoScrollButton(enabled) {
+    const btn = document.getElementById('btn-autoscroll');
+    if (!btn) return;
+    btn.classList.toggle('is-active', enabled);
+    btn.setAttribute('aria-pressed', String(enabled));
   }
 
   _toggleBottomPanel() {

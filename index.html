@@ -237,6 +237,25 @@
 
         <!-- Console actions -->
         <div class="bottom-panel__actions" id="console-actions" style="display:none">
+          <button class="bottom-panel__action-btn is-active" id="btn-autoscroll" data-tooltip="Auto-scroll"
+            data-i18n-tooltip="TIP_AUTOSCROLL" aria-pressed="true">
+            <!-- Lucide: arrow-down-to-line -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M12 17V3" />
+              <path d="m6 11 6 6 6-6" />
+              <path d="M19 21H5" />
+            </svg>
+          </button>
+          <button class="bottom-panel__action-btn" id="btn-copy-console" data-tooltip="Copy console output"
+            data-i18n-tooltip="TIP_COPY_CONSOLE">
+            <!-- Lucide: copy -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+            </svg>
+          </button>
           <button class="bottom-panel__action-btn" id="btn-clear-console" data-tooltip="Clear console"
             data-i18n-tooltip="TIP_CLEAR">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

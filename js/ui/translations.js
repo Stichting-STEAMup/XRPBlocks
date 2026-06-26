@@ -43,6 +43,8 @@ export const XRP_TRANSLATIONS = {
     TIP_SAVE: 'Save your project',
     TIP_LOAD: 'Load a saved project',
     TIP_COPY: 'Copy Python code',
+    TIP_COPY_CONSOLE: 'Copy console output',
+    TIP_AUTOSCROLL: 'Auto-scroll',
     TIP_CLEAR: 'Clear console',
     TIP_COLLAPSE: 'Collapse panel',
     TIP_EXPAND: 'Expand panel',
@@ -50,6 +52,7 @@ export const XRP_TRANSLATIONS = {
 
     // Toasts and console messages
     MSG_COPIED: 'Code copied!',
+    MSG_CONSOLE_COPIED: 'Console copied!',
     MSG_NO_CODE: 'No code to run — add some blocks first!',
     MSG_RUNNING: '▶ Running program...',
     MSG_CONNECTED: '✓ Connected to XRP',
@@ -202,6 +205,8 @@ export const XRP_TRANSLATIONS = {
     TIP_SAVE: 'Sla je project op',
     TIP_LOAD: 'Laad een opgeslagen project',
     TIP_COPY: 'Kopieer Python code',
+    TIP_COPY_CONSOLE: 'Kopieer console-uitvoer',
+    TIP_AUTOSCROLL: 'Automatisch scrollen',
     TIP_CLEAR: 'Console leegmaken',
     TIP_COLLAPSE: 'Paneel inklappen',
     TIP_EXPAND: 'Paneel uitklappen',
@@ -209,6 +214,7 @@ export const XRP_TRANSLATIONS = {
 
     // Toasts and console messages
     MSG_COPIED: 'Code gekopieerd!',
+    MSG_CONSOLE_COPIED: 'Console gekopieerd!',
     MSG_NO_CODE: 'Geen code om uit te voeren — voeg eerst blokken toe!',
     MSG_RUNNING: '▶ Programma uitvoeren...',
     MSG_CONNECTED: '✓ Verbonden met XRP',
