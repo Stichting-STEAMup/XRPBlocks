@@ -14,21 +14,22 @@ export class Toolbar {
 
     this._connected = false;
     this._running = false;
+    this._connectionMode = 'usb'; // 'usb' | 'bluetooth'
 
     this._bindElements();
     this._bindEvents();
   }
 
   _bindElements() {
-    this.connectBtn = document.getElementById('btn-connect');
-    this.runBtn = document.getElementById('btn-run');
-    this.stopBtn = document.getElementById('btn-stop');
-    this.deployBtn = document.getElementById('btn-deploy');
-    this.saveBtn = document.getElementById('btn-save');
-    this.loadBtn = document.getElementById('btn-load');
+    this.connectBtn   = document.getElementById('btn-connect');
+    this.runBtn       = document.getElementById('btn-run');
+    this.stopBtn      = document.getElementById('btn-stop');
+    this.deployBtn    = document.getElementById('btn-deploy');
+    this.saveBtn      = document.getElementById('btn-save');
+    this.loadBtn      = document.getElementById('btn-load');
     this.loadLessonBtn = document.getElementById('btn-load-lesson');
-    this.statusDot = document.getElementById('connection-dot');
-    this.statusText = document.getElementById('connection-text');
+    this.statusDot    = document.getElementById('connection-dot');
+    this.statusText   = document.getElementById('connection-text');
   }
 
   _bindEvents() {
@@ -41,23 +42,54 @@ export class Toolbar {
     this.loadLessonBtn?.addEventListener('click', () => this.onLoadLesson?.());
   }
 
-  setConnected(connected) {
+  /**
+   * Update the connected state.
+   * @param {boolean} connected
+   * @param {'usb'|'bluetooth'} [mode='usb'] - The transport mode used
+   */
+  setConnected(connected, mode = 'usb') {
     this._connected = connected;
+    this._connectionMode = mode;
 
     if (connected) {
-      this.connectBtn.textContent = '';
+      const isBt = mode === 'bluetooth';
+
+      // Bluetooth disconnect icon (wireless power symbol) vs USB disconnect icon
+      const disconnectIcon = isBt
+        ? `<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+             <path d="M8 6a6 6 0 1 0 8 0"/>
+             <line x1="12" y1="2" x2="12" y2="12"/>
+             <path d="M9.5 9.5 7 12l1 4"/>
+             <path d="M14.5 9.5 17 12l-1 4"/>
+           </svg>`
+        : `<svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+             <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
+             <line x1="12" y1="2" x2="12" y2="12"/>
+           </svg>`;
+
       this.connectBtn.innerHTML = `
-        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18.36 6.64a9 9 0 1 1-12.73 0"/>
-          <line x1="12" y1="2" x2="12" y2="12"/>
-        </svg>
+        ${disconnectIcon}
         <span class="btn-label">${Blockly.Msg['UI_DISCONNECT'] || 'Disconnect'}</span>
       `;
       this.connectBtn.classList.add('connected');
+
+      // Status dot: blue for BT, default accent for USB
       this.statusDot?.classList.add('connected');
-      if (this.statusText) this.statusText.textContent = Blockly.Msg['UI_CONNECTED'] || 'Connected';
+      if (isBt) {
+        this.statusDot?.classList.add('connected-bt');
+      } else {
+        this.statusDot?.classList.remove('connected-bt');
+      }
+
+      // Status text: show transport type
+      const modeLabel = isBt
+        ? (Blockly.Msg['UI_CONNECTED_BT'] || 'Connected (BT)')
+        : (Blockly.Msg['UI_CONNECTED'] || 'Connected');
+      if (this.statusText) this.statusText.textContent = modeLabel;
+
       this.runBtn.disabled = false;
       if (this.deployBtn) this.deployBtn.disabled = false;
+
     } else {
       this.connectBtn.innerHTML = `
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -72,7 +104,7 @@ export class Toolbar {
         <span class="btn-label">${Blockly.Msg['UI_CONNECT'] || 'Connect XRP'}</span>
       `;
       this.connectBtn.classList.remove('connected');
-      this.statusDot?.classList.remove('connected');
+      this.statusDot?.classList.remove('connected', 'connected-bt');
       if (this.statusText) this.statusText.textContent = Blockly.Msg['UI_DISCONNECTED'] || 'Disconnected';
       this.runBtn.disabled = true;
       if (this.deployBtn) this.deployBtn.disabled = true;

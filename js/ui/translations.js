@@ -33,7 +33,15 @@ export const XRP_TRANSLATIONS = {
     UI_LOAD: 'Load',
     UI_DISCONNECTED: 'Disconnected',
     UI_CONNECTED: 'Connected',
+    UI_CONNECTED_BT: 'Connected (BT)',
     UI_LESSON: 'Lesson',
+
+    // Connection modal
+    UI_CONNECT_CHOOSE: 'Choose connection type',
+    UI_CONNECT_USB: 'USB Cable',
+    UI_CONNECT_USB_DESC: 'WebSerial — Chrome / Edge',
+    UI_CONNECT_BT: 'Bluetooth',
+    UI_CONNECT_BT_DESC: 'Web Bluetooth — Chrome / Edge',
 
     // Tooltips
     TIP_CONNECT: 'Connect to your XRP robot',
@@ -57,6 +65,8 @@ export const XRP_TRANSLATIONS = {
     MSG_CONNECT_FAILED: 'Failed to connect: ',
     MSG_RUN_FAILED: 'Run error: ',
     MSG_NOT_SUPPORTED: 'WebSerial not supported — use Chrome or Edge',
+    MSG_BT_NOT_SUPPORTED: 'Web Bluetooth not supported — use Chrome or Edge',
+    MSG_NOT_SUPPORTED_SHORT: 'Not supported',
     MSG_STOPPED: '⏹ Program stopped',
     MSG_DEPLOYING: '⬇ Saving main.py to board...',
     MSG_DEPLOYED: '✓ Deployed! Program will run automatically on power-up.',
@@ -192,7 +202,15 @@ export const XRP_TRANSLATIONS = {
     UI_LOAD: 'Laden',
     UI_DISCONNECTED: 'Niet verbonden',
     UI_CONNECTED: 'Verbonden',
+    UI_CONNECTED_BT: 'Verbonden (BT)',
     UI_LESSON: 'Les',
+
+    // Verbindingsmodal
+    UI_CONNECT_CHOOSE: 'Kies verbindingstype',
+    UI_CONNECT_USB: 'USB-kabel',
+    UI_CONNECT_USB_DESC: 'WebSerial — Chrome / Edge',
+    UI_CONNECT_BT: 'Bluetooth',
+    UI_CONNECT_BT_DESC: 'Web Bluetooth — Chrome / Edge',
 
     // Tooltips
     TIP_CONNECT: 'Verbind met de XRP robot',
@@ -216,6 +234,8 @@ export const XRP_TRANSLATIONS = {
     MSG_CONNECT_FAILED: 'Verbinding mislukt: ',
     MSG_RUN_FAILED: 'Fout bij uitvoeren: ',
     MSG_NOT_SUPPORTED: 'WebSerial niet ondersteund — gebruik Chrome of Edge',
+    MSG_BT_NOT_SUPPORTED: 'Web Bluetooth niet ondersteund — gebruik Chrome of Edge',
+    MSG_NOT_SUPPORTED_SHORT: 'Niet ondersteund',
     MSG_STOPPED: '⏹ Programma gestopt',
     MSG_DEPLOYING: '⬇ main.py opslaan op de robot...',
     MSG_DEPLOYED: '✓ Opgeslagen! Programma start automatisch bij het aanzetten.',
