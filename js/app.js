@@ -17,16 +17,20 @@ import { registerSensorGenerators } from './blockly/generators/sensors.js';
 import { registerBoardGenerators } from './blockly/generators/board.js';
 import { registerCustomCategory } from './blockly/custom-category.js';
 import { XRPSerial } from './serial/webserial.js';
+import { XRPBluetooth } from './serial/webbluetooth.js';
 import { Toolbar } from './ui/toolbar.js';
 import { PythonPanel } from './ui/python-panel.js';
 import { ConsolePanel } from './ui/console-panel.js';
 import { XRP_TRANSLATIONS } from './ui/translations.js';
 import { LessonManager } from './ui/lesson-manager.js';
+import { ConnectionModal } from './ui/connection-modal.js';
+import { UnsupportedModal } from './ui/unsupported-modal.js';
 
 class XRPBlocksApp {
   constructor() {
     this.workspace = null;
-    this.serial = new XRPSerial();
+    this.serial = null;          // Assigned after user picks USB or BT
+    this.connectionMode = null;  // 'usb' | 'bluetooth'
     this.pythonPanel = null;
     this.consolePanel = null;
     this.toolbar = null;
@@ -54,8 +58,8 @@ class XRPBlocksApp {
     // Initialize UI components
     this._initUI();
 
-    // Set up WebSerial callbacks
-    this._initSerial();
+    // Set up WebSerial callbacks (called after transport is chosen)
+    // this._initSerial() is now called lazily in _handleConnect()
 
     // Set up workspace change listener for live code gen
     this._initLiveCodeGen();
@@ -223,10 +227,11 @@ class XRPBlocksApp {
         code = this._pythonGenerator.finish(code);
       }
 
-      // Prepend imports if we generated any actual code
+      // Prepend selective imports if we generated any actual code
       if (code.trim()) {
         const cleaned = code.replace(/^\n+/, '').replace(/\n+$/, '');
-        code = 'from XRPLib.defaults import *\n\n' + cleaned;
+        const importLine = this._buildImportLine(cleaned);
+        code = importLine + '\n\n' + cleaned;
       }
 
       this.pythonPanel?.update(code);
@@ -235,6 +240,45 @@ class XRPBlocksApp {
       console.error('Code generation error:', err);
       return '';
     }
+  }
+
+  /**
+   * Scan the generated Python code and produce a selective import line that
+   * only pulls in the XRPLib objects that are actually referenced. This
+   * prevents background threads (e.g. in imu.py and encoded_motor.py) from
+   * starting when those objects are not needed by the program.
+   *
+   * @param {string} code - Generated Python code (without the import line)
+   * @returns {string} - e.g. "from XRPLib.defaults import board, drivetrain"
+   */
+  _buildImportLine(code) {
+    // Ordered list of [identifier, regex] pairs.
+    // The regex checks that the identifier appears as a standalone word in the code.
+    const XRPLIB_OBJECTS = [
+      'board',
+      'drivetrain',
+      'left_motor',
+      'right_motor',
+      'motor_three',
+      'motor_four',
+      'imu',
+      'rangefinder',
+      'reflectance',
+      'servo_one',
+      'servo_two',
+    ];
+
+    const needed = XRPLIB_OBJECTS.filter(name => {
+      // Match the identifier as a whole word (not inside another identifier)
+      return new RegExp(`\\b${name}\\b`).test(code);
+    });
+
+    if (needed.length === 0) {
+      // Fallback: no recognised objects — use the safe minimal import
+      return 'from XRPLib.defaults import board';
+    }
+
+    return `from XRPLib.defaults import ${needed.join(', ')}`;
   }
 
   // ── UI Components ──
@@ -300,10 +344,17 @@ class XRPBlocksApp {
       this._toggleBottomPanel();
     });
 
-    // Check WebSerial support
-    if (!XRPSerial.isSupported()) {
-      this.toolbar.setConnected(false);
-      document.getElementById('btn-connect').title = Blockly.Msg['MSG_NOT_SUPPORTED'] || 'WebSerial not supported — use Chrome or Edge';
+    // Check transport support — disable connect button if neither is available
+    const usbOk = XRPSerial.isSupported();
+    const btOk  = XRPBluetooth.isSupported();
+    if (!usbOk && !btOk) {
+      const connectBtn = document.getElementById('btn-connect');
+      if (connectBtn) connectBtn.disabled = true;
+      document.getElementById('btn-connect').title =
+        Blockly.Msg['MSG_NOT_SUPPORTED'] || 'WebSerial/Bluetooth not supported — use Chrome or Edge';
+
+      // Inform the user up front that this browser can't connect to the XRP.
+      UnsupportedModal.show();
     }
   }
 
@@ -406,7 +457,7 @@ class XRPBlocksApp {
 
   _initSerial() {
     this.serial.onConnect = () => {
-      this.toolbar.setConnected(true);
+      this.toolbar.setConnected(true, this.connectionMode || 'usb');
       this.consolePanel.appendSystem(Blockly.Msg['MSG_CONNECTED'] || '✓ Connected to XRP');
     };
 
@@ -426,14 +477,34 @@ class XRPBlocksApp {
   }
 
   async _handleConnect() {
-    if (this.serial.connected) {
+    // If already connected, disconnect
+    if (this.serial && this.serial.connected) {
       await this.serial.disconnect();
+      return;
+    }
+
+    // Show the connection picker modal
+    const mode = await ConnectionModal.pick();
+    if (!mode) return; // user cancelled
+
+    // Instantiate the appropriate transport
+    this.connectionMode = mode;
+    if (mode === 'bluetooth') {
+      this.serial = new XRPBluetooth();
     } else {
-      try {
-        await this.serial.connect();
-      } catch (err) {
-        this._showToast((Blockly.Msg['MSG_CONNECT_FAILED'] || 'Failed to connect: ') + err.message, 'error');
-      }
+      this.serial = new XRPSerial();
+    }
+
+    // Wire up the transport callbacks
+    this._initSerial();
+
+    try {
+      await this.serial.connect();
+    } catch (err) {
+      this._showToast(
+        (Blockly.Msg['MSG_CONNECT_FAILED'] || 'Failed to connect: ') + err.message,
+        'error'
+      );
     }
   }
 
