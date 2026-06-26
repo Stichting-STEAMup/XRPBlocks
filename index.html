@@ -44,15 +44,13 @@
       <!-- Connect button -->
       <button id="btn-connect" class="toolbar__btn toolbar__btn--connect" data-tooltip="Connect to your XRP robot"
         data-i18n-tooltip="TIP_CONNECT">
+        <!-- Lucide: plug -->
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
           stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="10" cy="7" r="1" />
-          <circle cx="4" cy="20" r="1" />
-          <path d="M4.7 19.3 19 5" />
-          <path d="m21 3-3 1 2 2Z" />
-          <path d="M9.26 7.68 5 12l2 5" />
-          <path d="m10 14 5 2 3.5-3.5" />
-          <path d="m18 12 1-1 1 1-1 1Z" />
+          <path d="M12 22v-5" />
+          <path d="M9 8V2" />
+          <path d="M15 8V2" />
+          <path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z" />
         </svg>
         <span class="btn-label" data-i18n="UI_CONNECT">Connect XRP</span>
       </button>
@@ -290,22 +288,15 @@
               <span data-i18n="MSG_NOT_SUPPORTED_SHORT">Not supported</span>
             </div>
             <div class="conn-opt__icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2v8"/>
-                <path d="M8 6h8"/>
-                <path d="M7 14h1a2 2 0 0 1 2 2v2H6v-2a2 2 0 0 1 2-2h-1"/>
-                <path d="M17 14h-1a2 2 0 0 0-2 2v2h4v-2a2 2 0 0 0-1-2h-1"/>
-                <path d="M9 10h6"/>
-                <rect x="6" y="14" width="12" height="6" rx="1" stroke-width="0" fill="currentColor" opacity="0"/>
-              </svg>
-              <!-- USB plug icon -->
-              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="14" y="4" width="20" height="12" rx="3"/>
-                <line x1="24" y1="16" x2="24" y2="44"/>
-                <line x1="18" y1="28" x2="30" y2="28"/>
-                <line x1="18" y1="36" x2="30" y2="36"/>
-                <circle cx="18" cy="22" r="2" fill="currentColor" stroke="none"/>
-                <circle cx="30" cy="22" r="2" fill="currentColor" stroke="none"/>
+              <!-- Lucide: usb -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10" cy="7" r="1"/>
+                <circle cx="4" cy="20" r="1"/>
+                <path d="M4.7 19.3 19 5"/>
+                <path d="m21 3-3 1 2 2Z"/>
+                <path d="M9.26 7.68 5 12l2 5"/>
+                <path d="m10 14 5 2 3.5-3.5"/>
+                <path d="m18 12 1-1 1 1-1 1Z"/>
               </svg>
             </div>
             <span class="conn-opt__label" data-i18n="UI_CONNECT_USB">USB Cable</span>
@@ -319,15 +310,59 @@
               <span data-i18n="MSG_NOT_SUPPORTED_SHORT">Not supported</span>
             </div>
             <div class="conn-opt__icon conn-opt__icon--bt">
-              <!-- Bluetooth icon -->
-              <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 12 36 36 24 48 24 0 36 12 12 36"/>
+              <!-- Lucide: bluetooth -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m7 7 10 10-5 5V2l5 5L7 17"/>
               </svg>
             </div>
             <span class="conn-opt__label" data-i18n="UI_CONNECT_BT">Bluetooth</span>
             <span class="conn-opt__desc" data-i18n="UI_CONNECT_BT_DESC">Web Bluetooth — Chrome / Edge</span>
           </button>
 
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ Unsupported Browser Modal ═══════════ -->
+    <div id="unsupported-modal" class="connection-modal" role="dialog" aria-modal="true" aria-labelledby="unsupported-modal-title">
+      <div class="connection-modal__panel">
+        <!-- Header -->
+        <div class="connection-modal__header">
+          <h2 class="connection-modal__title" id="unsupported-modal-title" data-i18n="UI_UNSUPPORTED_TITLE">Browser not supported</h2>
+          <button id="unsupported-modal-close" class="connection-modal__close" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Body -->
+        <div class="unsupported-modal__body">
+          <div class="unsupported-modal__icon">
+            <!-- Lucide: triangle-alert -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+              <path d="M12 9v4"/>
+              <path d="M12 17h.01"/>
+            </svg>
+          </div>
+
+          <p class="unsupported-modal__text" data-i18n="UI_UNSUPPORTED_BODY">
+            This browser can't connect to the XRP robot. Connecting needs WebSerial or Web Bluetooth, which aren't available in Safari or Firefox.
+          </p>
+
+          <div class="unsupported-modal__hint">
+            <!-- Lucide: monitor -->
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="14" x="2" y="3" rx="2"/>
+              <line x1="8" x2="16" y1="21" y2="21"/>
+              <line x1="12" x2="12" y1="17" y2="21"/>
+            </svg>
+            <span data-i18n="UI_UNSUPPORTED_HINT">Use Google Chrome or Microsoft Edge on a desktop computer.</span>
+          </div>
+
+          <button id="unsupported-modal-ok" class="unsupported-modal__btn" data-i18n="UI_UNSUPPORTED_DISMISS">Got it</button>
         </div>
       </div>
     </div>

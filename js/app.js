@@ -24,6 +24,7 @@ import { ConsolePanel } from './ui/console-panel.js';
 import { XRP_TRANSLATIONS } from './ui/translations.js';
 import { LessonManager } from './ui/lesson-manager.js';
 import { ConnectionModal } from './ui/connection-modal.js';
+import { UnsupportedModal } from './ui/unsupported-modal.js';
 
 class XRPBlocksApp {
   constructor() {
@@ -351,6 +352,9 @@ class XRPBlocksApp {
       if (connectBtn) connectBtn.disabled = true;
       document.getElementById('btn-connect').title =
         Blockly.Msg['MSG_NOT_SUPPORTED'] || 'WebSerial/Bluetooth not supported — use Chrome or Edge';
+
+      // Inform the user up front that this browser can't connect to the XRP.
+      UnsupportedModal.show();
     }
   }
 

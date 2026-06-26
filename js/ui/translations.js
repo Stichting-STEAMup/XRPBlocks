@@ -43,6 +43,12 @@ export const XRP_TRANSLATIONS = {
     UI_CONNECT_BT: 'Bluetooth',
     UI_CONNECT_BT_DESC: 'Web Bluetooth — Chrome / Edge',
 
+    // Unsupported-browser modal
+    UI_UNSUPPORTED_TITLE: 'Browser not supported',
+    UI_UNSUPPORTED_BODY: "This browser can't connect to the XRP robot. Connecting needs WebSerial or Web Bluetooth, which aren't available in Safari or Firefox.",
+    UI_UNSUPPORTED_HINT: 'Use Google Chrome or Microsoft Edge on a desktop computer.',
+    UI_UNSUPPORTED_DISMISS: 'Got it',
+
     // Tooltips
     TIP_CONNECT: 'Connect to your XRP robot',
     TIP_RUN: 'Run your program on the XRP',
@@ -211,6 +217,12 @@ export const XRP_TRANSLATIONS = {
     UI_CONNECT_USB_DESC: 'WebSerial — Chrome / Edge',
     UI_CONNECT_BT: 'Bluetooth',
     UI_CONNECT_BT_DESC: 'Web Bluetooth — Chrome / Edge',
+
+    // Unsupported-browser modal
+    UI_UNSUPPORTED_TITLE: 'Browser niet ondersteund',
+    UI_UNSUPPORTED_BODY: 'Deze browser kan geen verbinding maken met de XRP-robot. Verbinden vereist WebSerial of Web Bluetooth, die niet beschikbaar zijn in Safari of Firefox.',
+    UI_UNSUPPORTED_HINT: 'Gebruik Google Chrome of Microsoft Edge op een desktopcomputer.',
+    UI_UNSUPPORTED_DISMISS: 'Begrepen',
 
     // Tooltips
     TIP_CONNECT: 'Verbind met de XRP robot',
