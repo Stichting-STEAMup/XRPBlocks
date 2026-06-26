@@ -47,9 +47,11 @@ export class XRPBluetooth extends XRPTransportBase {
     }
 
     try {
-      // Show the browser's BLE device picker — filter to devices advertising the NUS service
+      // Filter by device name prefix — the XRP doesn't advertise the UART service UUID
+      // in its BLE advertisement packets, so a services filter hides it from the list.
+      // This matches the approach used by xrpcode.wpi.edu (Open-STEM/XRPWeb).
       this._device = await navigator.bluetooth.requestDevice({
-        filters: [{ services: [UART_SERVICE_UUID] }],
+        filters: [{ namePrefix: 'XRP' }],
         optionalServices: [UART_SERVICE_UUID],
       });
 
