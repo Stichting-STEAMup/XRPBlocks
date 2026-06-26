@@ -674,6 +674,17 @@ button {
   color: var(--color-text);
 }
 
+/* Active/toggled state (e.g. console auto-scroll on) */
+.bottom-panel__action-btn.is-active {
+  background: rgba(108, 99, 255, 0.12);
+  color: var(--color-primary);
+}
+
+.bottom-panel__action-btn.is-active:hover {
+  background: rgba(108, 99, 255, 0.2);
+  color: var(--color-primary);
+}
+
 .bottom-panel__action-btn svg {
   width: 14px;
   height: 14px;
@@ -824,6 +835,19 @@ button {
 [data-tooltip]:hover::after {
   opacity: 1;
   transform: translateX(-50%) scale(1);
+}
+
+/* Panel action buttons sit flush against the right edge of the screen, so a
+   centered tooltip overflows the viewport. Anchor those to the button's right
+   edge instead, so the tooltip grows leftward (into the page) and stays visible. */
+.bottom-panel__actions [data-tooltip]::after {
+  left: auto;
+  right: 0;
+  transform: translateX(0) scale(0.95);
+}
+
+.bottom-panel__actions [data-tooltip]:hover::after {
+  transform: translateX(0) scale(1);
 }
 
 /* --- Responsive --- */
