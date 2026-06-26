@@ -836,6 +836,19 @@ button {
   transform: translateX(-50%) scale(1);
 }
 
+/* Panel action buttons sit flush against the right edge of the screen, so a
+   centered tooltip overflows the viewport. Anchor those to the button's right
+   edge instead, so the tooltip grows leftward (into the page) and stays visible. */
+.bottom-panel__actions [data-tooltip]::after {
+  left: auto;
+  right: 0;
+  transform: translateX(0) scale(0.95);
+}
+
+.bottom-panel__actions [data-tooltip]:hover::after {
+  transform: translateX(0) scale(1);
+}
+
 /* --- Responsive --- */
 @media (max-width: 768px) {
   .toolbar {
