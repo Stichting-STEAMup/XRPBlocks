@@ -726,31 +726,35 @@ button {
   min-height: 100%;
 }
 
-/* Python syntax highlighting (light theme) */
+/* Python syntax highlighting (bluloco) */
 .python-preview .keyword {
-  color: #7c4dff;
+  color: #0098dd;
   font-weight: 500;
 }
 
 .python-preview .string {
-  color: #2e7d32;
+  color: #c5a332;
 }
 
 .python-preview .number {
-  color: #e65100;
+  color: #ce33c0;
 }
 
 .python-preview .comment {
-  color: #9ca3b8;
+  color: #a0a1a7;
   font-style: italic;
 }
 
 .python-preview .function {
-  color: #1565c0;
+  color: #23974a;
 }
 
 .python-preview .builtin {
-  color: #6a1b9a;
+  color: #d52753;
+}
+
+.python-preview .punctuation {
+  color: #7a82da;
 }
 
 /* Console */
