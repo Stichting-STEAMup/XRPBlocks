@@ -681,12 +681,12 @@ button {
 
 /* Active/toggled state (e.g. console auto-scroll on) */
 .bottom-panel__action-btn.is-active {
-  background: rgba(108, 99, 255, 0.12);
+  background: rgba(209, 24, 44, 0.12);
   color: var(--color-primary);
 }
 
 .bottom-panel__action-btn.is-active:hover {
-  background: rgba(108, 99, 255, 0.2);
+  background: rgba(209, 24, 44, 0.2);
   color: var(--color-primary);
 }
 
@@ -946,9 +946,9 @@ button {
 
 /* Lesson panel container */
 .lesson-panel {
-  background: linear-gradient(135deg, #f5f3ff 0%, #eef2ff 100%);
-  border-bottom: 2px solid #c4b5fd;
-  box-shadow: 0 4px 16px rgba(108, 99, 255, 0.1);
+  background: linear-gradient(135deg, #fff1f2 0%, #fef2f2 100%);
+  border-bottom: 2px solid #fda4af;
+  box-shadow: 0 4px 16px rgba(209, 24, 44, 0.1);
   flex-shrink: 0;
   overflow: hidden;
   /* Slide transition */
@@ -987,14 +987,14 @@ button {
 .lesson-panel__book-icon {
   width: 18px;
   height: 18px;
-  color: #7c4dff;
+  color: var(--color-primary);
   flex-shrink: 0;
 }
 
 .lesson-panel__title {
   font-weight: 800;
   font-size: 14px;
-  color: #3d2c8d;
+  color: #7a0f1a;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1010,8 +1010,8 @@ button {
 .lesson-panel__step-count {
   font-size: 12px;
   font-weight: 700;
-  color: #7c4dff;
-  background: rgba(124, 77, 255, 0.1);
+  color: var(--color-primary);
+  background: rgba(209, 24, 44, 0.1);
   padding: 3px 10px;
   border-radius: var(--radius-full);
   white-space: nowrap;
@@ -1024,8 +1024,8 @@ button {
   width: 28px;
   height: 28px;
   border-radius: var(--radius-full);
-  background: rgba(124, 77, 255, 0.1);
-  color: #7c4dff;
+  background: rgba(209, 24, 44, 0.1);
+  color: var(--color-primary);
   border: none;
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -1033,7 +1033,7 @@ button {
 }
 
 .lesson-panel__close:hover {
-  background: rgba(124, 77, 255, 0.22);
+  background: rgba(209, 24, 44, 0.22);
   transform: scale(1.1);
 }
 
@@ -1045,7 +1045,7 @@ button {
 /* Progress bar */
 .lesson-panel__progress {
   height: 4px;
-  background: rgba(124, 77, 255, 0.15);
+  background: rgba(209, 24, 44, 0.15);
   margin: 6px 16px 0 16px;
   border-radius: var(--radius-full);
   overflow: hidden;
@@ -1053,7 +1053,7 @@ button {
 
 .lesson-panel__progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #7c4dff, #a78bfa);
+  background: linear-gradient(90deg, #d1182c, #f87171);
   border-radius: var(--radius-full);
   transition: width 350ms cubic-bezier(0.4, 0, 0.2, 1);
   width: 0%;
@@ -1121,12 +1121,12 @@ button {
 }
 
 .lesson-panel__btn--prev {
-  background: rgba(124, 77, 255, 0.1);
-  color: #7c4dff;
+  background: rgba(209, 24, 44, 0.1);
+  color: var(--color-primary);
 }
 
 .lesson-panel__btn--prev:hover:not(:disabled) {
-  background: rgba(124, 77, 255, 0.2);
+  background: rgba(209, 24, 44, 0.2);
   transform: translateX(-2px);
 }
 
@@ -1137,15 +1137,15 @@ button {
 }
 
 .lesson-panel__btn--next {
-  background: linear-gradient(135deg, #7c4dff, #6c63ff);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
   color: #fff;
-  box-shadow: 0 2px 8px rgba(108, 99, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(209, 24, 44, 0.3);
 }
 
 .lesson-panel__btn--next:hover {
-  background: linear-gradient(135deg, #6c3fe8, #5a52e0);
+  background: linear-gradient(135deg, var(--color-primary-hover), #8f0f1d);
   transform: translateX(2px);
-  box-shadow: 0 4px 12px rgba(108, 99, 255, 0.4);
+  box-shadow: 0 4px 12px rgba(209, 24, 44, 0.4);
 }
 
 /* "Finish" variant for the last step */
@@ -1273,7 +1273,7 @@ button {
 }
 
 .lesson-confirm-btn--no:focus-visible {
-  outline: 2px solid #6c63ff;
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }
 
@@ -1430,7 +1430,7 @@ button {
 /* USB option accent */
 .conn-opt-usb:hover:not(:disabled) {
   border-color: var(--color-primary);
-  box-shadow: 0 8px 24px rgba(108, 99, 255, 0.18);
+  box-shadow: 0 8px 24px rgba(209, 24, 44, 0.18);
 }
 
 /* Bluetooth option accent */
@@ -1444,15 +1444,15 @@ button {
   width: 64px;
   height: 64px;
   border-radius: var(--radius-lg);
-  background: rgba(108, 99, 255, 0.12);
-  border: 1.5px solid rgba(108, 99, 255, 0.25);
+  background: rgba(209, 24, 44, 0.12);
+  border: 1.5px solid rgba(209, 24, 44, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
   transition:
     background var(--transition-normal),
     border-color var(--transition-normal);
-  color: rgba(108, 99, 255, 1);
+  color: rgba(209, 24, 44, 1);
 }
 
 .conn-opt__icon svg {
@@ -1467,8 +1467,8 @@ button {
 }
 
 .conn-opt-usb:hover:not(:disabled) .conn-opt__icon {
-  background: rgba(108, 99, 255, 0.2);
-  border-color: rgba(108, 99, 255, 0.5);
+  background: rgba(209, 24, 44, 0.2);
+  border-color: rgba(209, 24, 44, 0.5);
 }
 
 .conn-opt-bt:hover:not(:disabled) .conn-opt__icon--bt {
