@@ -114,9 +114,9 @@
 
       <div class="toolbar__divider"></div>
 
-      <!-- Load Lesson (debug) -->
+      <!-- Load Lesson -->
       <button id="btn-load-lesson" class="toolbar__btn toolbar__btn--lesson"
-        data-tooltip="Load a lesson file"
+        data-tooltip="Browse lessons"
         data-i18n-tooltip="TIP_LESSON">
         <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
@@ -382,6 +382,40 @@
           </div>
 
           <button id="unsupported-modal-ok" class="unsupported-modal__btn" data-i18n="UI_UNSUPPORTED_DISMISS">Got it</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ Lesson Picker Modal ═══════════ -->
+    <div id="lesson-modal" class="connection-modal" role="dialog" aria-modal="true" aria-labelledby="lesson-modal-title">
+      <div class="connection-modal__panel lesson-modal__panel">
+        <!-- Header -->
+        <div class="connection-modal__header">
+          <h2 class="connection-modal__title" id="lesson-modal-title" data-i18n="UI_LESSON_CHOOSE">Choose a lesson</h2>
+          <button id="lesson-modal-close" class="connection-modal__close" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"/>
+              <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Server lessons, populated by JS from lessons/index.json -->
+        <div class="lesson-modal__list" id="lesson-modal-list">
+          <div class="lesson-modal__status" data-i18n="MSG_LESSONS_LOADING">Loading lessons…</div>
+        </div>
+
+        <!-- Upload -->
+        <div class="lesson-modal__upload-row">
+          <button id="lesson-modal-upload" class="lesson-modal__upload-btn" type="button">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <span data-i18n="UI_LESSON_UPLOAD">Upload lesson file</span>
+          </button>
+          <div id="lesson-modal-error" class="lesson-modal__error" hidden></div>
         </div>
       </div>
     </div>

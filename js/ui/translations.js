@@ -43,6 +43,10 @@ export const XRP_TRANSLATIONS = {
     UI_CONNECT_BT: 'Bluetooth',
     UI_CONNECT_BT_DESC: 'Web Bluetooth — Chrome / Edge',
 
+    // Lesson picker modal
+    UI_LESSON_CHOOSE: 'Choose a lesson',
+    UI_LESSON_UPLOAD: 'Upload lesson file',
+
     // Unsupported-browser modal
     UI_UNSUPPORTED_TITLE: 'Browser not supported',
     UI_UNSUPPORTED_BODY: "This browser can't connect to the XRP robot. Connecting needs WebSerial or Web Bluetooth, which aren't available in Safari or Firefox.",
@@ -62,7 +66,7 @@ export const XRP_TRANSLATIONS = {
     TIP_CLEAR: 'Clear console',
     TIP_COLLAPSE: 'Collapse panel',
     TIP_EXPAND: 'Expand panel',
-    TIP_LESSON: 'Load a lesson file',
+    TIP_LESSON: 'Browse lessons',
 
     // Toasts and console messages
     MSG_COPIED: 'Code copied!',
@@ -83,6 +87,9 @@ export const XRP_TRANSLATIONS = {
     MSG_LESSON_LOADED: '📖 Lesson loaded: ',
     MSG_LESSON_INVALID: 'Invalid lesson file — must have a steps array.',
     MSG_LESSON_FILE_ERROR: 'Failed to read lesson file',
+    MSG_LESSONS_LOADING: 'Loading lessons…',
+    MSG_LESSONS_LOAD_ERROR: 'Failed to load lessons from the server.',
+    MSG_LESSONS_EMPTY: 'No lessons found on the server.',
 
     // Lesson panel UI
     LESSON_STEP_OF: 'Step %1 of %2',
@@ -221,6 +228,10 @@ export const XRP_TRANSLATIONS = {
     UI_CONNECT_BT: 'Bluetooth',
     UI_CONNECT_BT_DESC: 'Web Bluetooth — Chrome / Edge',
 
+    // Lesmodal
+    UI_LESSON_CHOOSE: 'Kies een les',
+    UI_LESSON_UPLOAD: 'Lesbestand uploaden',
+
     // Unsupported-browser modal
     UI_UNSUPPORTED_TITLE: 'Browser niet ondersteund',
     UI_UNSUPPORTED_BODY: 'Deze browser kan geen verbinding maken met de XRP-robot. Verbinden vereist WebSerial of Web Bluetooth, die niet beschikbaar zijn in Safari of Firefox.',
@@ -240,7 +251,7 @@ export const XRP_TRANSLATIONS = {
     TIP_CLEAR: 'Console leegmaken',
     TIP_COLLAPSE: 'Paneel inklappen',
     TIP_EXPAND: 'Paneel uitklappen',
-    TIP_LESSON: 'Laad een lesbestand',
+    TIP_LESSON: 'Blader door lessen',
 
     // Toasts and console messages
     MSG_COPIED: 'Code gekopieerd!',
@@ -261,6 +272,9 @@ export const XRP_TRANSLATIONS = {
     MSG_LESSON_LOADED: '📖 Les geladen: ',
     MSG_LESSON_INVALID: 'Ongeldig lesbestand — moet een stappen-array bevatten.',
     MSG_LESSON_FILE_ERROR: 'Kan het lesbestand niet lezen',
+    MSG_LESSONS_LOADING: 'Lessen laden…',
+    MSG_LESSONS_LOAD_ERROR: 'Kan lessen niet van de server laden.',
+    MSG_LESSONS_EMPTY: 'Geen lessen gevonden op de server.',
 
     // Lesson panel UI
     LESSON_STEP_OF: 'Stap %1 van %2',

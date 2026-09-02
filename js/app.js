@@ -23,6 +23,7 @@ import { PythonPanel } from './ui/python-panel.js';
 import { ConsolePanel } from './ui/console-panel.js';
 import { XRP_TRANSLATIONS } from './ui/translations.js';
 import { LessonManager } from './ui/lesson-manager.js';
+import { LessonPickerModal } from './ui/lesson-picker-modal.js';
 import { ConnectionModal } from './ui/connection-modal.js';
 import { UnsupportedModal } from './ui/unsupported-modal.js';
 
@@ -314,7 +315,7 @@ class XRPBlocksApp {
       onDeploy: () => this._handleDeploy(),
       onSave: () => this._saveWorkspace(),
       onLoad: () => this._loadFromFile(),
-      onLoadLesson: () => this._loadLessonFromFile(),
+      onLoadLesson: () => this._openLessonPicker(),
     });
 
     // Lesson manager
@@ -778,35 +779,21 @@ class XRPBlocksApp {
 
   // ── Lesson Support ──
 
-  _loadLessonFromFile() {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.json';
-    input.onchange = async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      try {
-        const text = await file.text();
-        const lesson = JSON.parse(text);
-        const ok = this.lessonManager.load(lesson);
-        if (ok) {
-          this._showToast(
-            (Blockly.Msg['MSG_LESSON_LOADED'] || '📖 Lesson loaded: ') + (lesson.title || 'Untitled')
-          );
-        } else {
-          this._showToast(
-            Blockly.Msg['MSG_LESSON_INVALID'] || 'Invalid lesson file — must have a steps array.',
-            'error'
-          );
-        }
-      } catch (err) {
-        this._showToast(
-          Blockly.Msg['MSG_LESSON_FILE_ERROR'] || 'Failed to read lesson file',
-          'error'
-        );
-      }
-    };
-    input.click();
+  async _openLessonPicker() {
+    const lesson = await LessonPickerModal.pick();
+    if (!lesson) return;
+
+    const ok = this.lessonManager.load(lesson);
+    if (ok) {
+      this._showToast(
+        (Blockly.Msg['MSG_LESSON_LOADED'] || '📖 Lesson loaded: ') + (lesson.title || 'Untitled')
+      );
+    } else {
+      this._showToast(
+        Blockly.Msg['MSG_LESSON_INVALID'] || 'Invalid lesson file — must have a steps array.',
+        'error'
+      );
+    }
   }
 
   /**
