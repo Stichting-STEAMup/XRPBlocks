@@ -17,6 +17,9 @@ export class XRPSerial extends XRPTransportBase {
 
     // Internal flag to stop the read loop cleanly
     this._stopReading = false;
+
+    // Bound handler for the OS-level "device unplugged" signal (see connect())
+    this._onNativeDisconnect = this._handleNativeDisconnect.bind(this);
   }
 
   // ── Static capability check ───────────────────────────────────────────────
@@ -50,6 +53,12 @@ export class XRPSerial extends XRPTransportBase {
       this.connected    = true;
       this._stopReading = false;
 
+      // Listen for the OS reporting the USB device physically went away. On some
+      // platforms a pending reader.read() never rejects when the cable is pulled,
+      // so this event is the only reliable way to notice and release the port —
+      // without it the port stays open forever and can't be reconnected.
+      navigator.serial.addEventListener('disconnect', this._onNativeDisconnect);
+
       // Acquire a single writer for the session
       this.writer = this.port.writable.getWriter();
 
@@ -73,6 +82,8 @@ export class XRPSerial extends XRPTransportBase {
     this.connected    = false;
     this._stopReading = true;
 
+    navigator.serial.removeEventListener('disconnect', this._onNativeDisconnect);
+
     // Cancel and release the reader first so the port can be closed
     if (this.reader) {
       try { await this.reader.cancel(); }  catch (_) { /* ignore */ }
@@ -93,6 +104,18 @@ export class XRPSerial extends XRPTransportBase {
     }
 
     if (this.onDisconnect) this.onDisconnect();
+  }
+
+  /**
+   * Handle the Web Serial API's global 'disconnect' event, fired when the OS
+   * reports a paired port's device is no longer present (e.g. cable unplugged).
+   * This is distinct from the read loop noticing an error — on some platforms
+   * a pending reader.read() simply never settles when the device disappears,
+   * so this event is what actually lets us release the port and clean up.
+   */
+  _handleNativeDisconnect(event) {
+    if (event.target !== this.port || !this.connected) return;
+    this.disconnect();
   }
 
   // ── Send ──────────────────────────────────────────────────────────────────
