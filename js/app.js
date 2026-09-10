@@ -527,6 +527,20 @@ class XRPBlocksApp {
         (Blockly.Msg['MSG_CONNECT_FAILED'] || 'Failed to connect: ') + err.message,
         'error'
       );
+      return;
+    }
+
+    // The board may already be mid-program from a previous session (e.g. it
+    // autoran main.py on power-up). Try to regain the REPL now rather than
+    // waiting for the user to hit Stop and hope a single Ctrl+C lands.
+    if (this.serial.connected) {
+      const atRepl = await this.serial.getToREPL();
+      if (!atRepl) {
+        const message = this.connectionMode === 'bluetooth'
+          ? (Blockly.Msg['MSG_REGAINING_CONTROL_BLE'] || '⏳ Board was busy running a program — sent a stop signal, it will reboot and disconnect. Reconnect once it comes back.')
+          : (Blockly.Msg['MSG_REGAINING_CONTROL_USB'] || '⚠ Board is still busy running a program and did not respond to Stop. Try again, or press the reset button on the board.');
+        this.consolePanel.appendSystem(message);
+      }
     }
   }
 
@@ -561,8 +575,15 @@ class XRPBlocksApp {
   async _handleStop() {
     try {
       this._stopWatchingForProgramEnd();
-      await this.serial.stopExecution();
-      this.consolePanel.appendSystem(Blockly.Msg['MSG_STOPPED'] || '⏹ Program stopped');
+      const stopped = await this.serial.stopExecution();
+      if (stopped) {
+        this.consolePanel.appendSystem(Blockly.Msg['MSG_STOPPED'] || '⏹ Program stopped');
+      } else {
+        const message = this.connectionMode === 'bluetooth'
+          ? (Blockly.Msg['MSG_STOP_REBOOTING'] || '⏹ Stop signal sent — board is rebooting, reconnect once it comes back.')
+          : (Blockly.Msg['MSG_STOP_FAILED'] || '⚠ Board did not confirm it stopped — try again, or press the reset button on the board.');
+        this.consolePanel.appendSystem(message);
+      }
       this.toolbar.setRunning(false);
     } catch (err) {
       this.consolePanel.appendError(`Stop error: ${err.message}`);
@@ -592,11 +613,8 @@ class XRPBlocksApp {
       this.consolePanel.appendSystem(Blockly.Msg['MSG_DEPLOYED'] || '✓ Deployed! Program will run automatically on power-up.');
       this._showToast(Blockly.Msg['MSG_DEPLOYED'] || '✓ Deployed to board!');
 
-      // The upload soft-reboots the board to start running main.py immediately.
-      // Update UI state and monitor program completion.
-      this.toolbar.setRunning(true);
-      this.consolePanel.appendSystem(Blockly.Msg['MSG_RUNNING'] || '▶ Running program...');
-      this._watchForProgramEnd();
+      // Deploy only saves main.py — it does not run it, so the board stays
+      // idle at the REPL (and reachable over Bluetooth) right after a save.
     } catch (err) {
       this.consolePanel.appendError(`${Blockly.Msg['MSG_DEPLOY_FAILED'] || 'Deploy error: '}${err.message}`);
       this._showToast((Blockly.Msg['MSG_DEPLOY_FAILED'] || 'Deploy error: ') + err.message, 'error');

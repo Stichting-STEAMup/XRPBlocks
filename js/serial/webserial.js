@@ -81,6 +81,8 @@ export class XRPSerial extends XRPTransportBase {
   async disconnect() {
     this.connected    = false;
     this._stopReading = true;
+    this._rxBuffer    = '';
+    this._rxWaiters   = [];
 
     navigator.serial.removeEventListener('disconnect', this._onNativeDisconnect);
 
@@ -153,7 +155,7 @@ export class XRPSerial extends XRPTransportBase {
 
         if (result.value) {
           const text = this.decoder.decode(result.value);
-          if (this.onData) this.onData(text);
+          this._feedIncomingData(text);
         }
       }
     } finally {
