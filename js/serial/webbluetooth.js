@@ -218,16 +218,21 @@ export class XRPBluetooth extends XRPTransportBase {
 
     await this.enterRawRepl();
 
-    // Send code in BLE_CHUNK_SIZE chunks (matching XRPWeb goCommand)
-    const chunks = Math.ceil(pythonCode.length / BLE_CHUNK_SIZE) + 1;
-    for (let i = 0; i < chunks; i++) {
-      const slice = pythonCode.slice(i * BLE_CHUNK_SIZE, (i + 1) * BLE_CHUNK_SIZE);
-      await this.send(slice);
-    }
+    try {
+      // Send code in BLE_CHUNK_SIZE chunks (matching XRPWeb goCommand)
+      const chunks = Math.ceil(pythonCode.length / BLE_CHUNK_SIZE) + 1;
+      for (let i = 0; i < chunks; i++) {
+        const slice = pythonCode.slice(i * BLE_CHUNK_SIZE, (i + 1) * BLE_CHUNK_SIZE);
+        await this.send(slice);
+      }
 
-    await this.send('\x04'); // Ctrl+D — execute
-    await this._delay(200);
-    await this.exitRawRepl();
+      await this.send('\x04'); // Ctrl+D — execute
+      await this._delay(200);
+    } finally {
+      // Always try to leave raw REPL, even if something above threw — otherwise
+      // the board is left stuck in raw REPL and stops responding to the REPL.
+      await this.exitRawRepl().catch(() => {});
+    }
   }
 
   /**
@@ -236,23 +241,6 @@ export class XRPBluetooth extends XRPTransportBase {
   async exitRawRepl() {
     await this.send('\x02'); // Ctrl+B
     await this._delay(200);
-  }
-
-  /**
-   * "Soft reboot" — overridden for BLE.
-   *
-   * A real MicroPython soft reset (Ctrl+D at the friendly REPL) tears down the
-   * firmware's BLE REPL and drops the GATT link, surfacing as an "unknown GATT
-   * error" on the next operation. That's fine over USB but fatal over BLE.
-   *
-   * uploadFile() calls this to auto-run a freshly-saved main.py. Over BLE we get
-   * the same effect — run the deployed program and stream its output — by
-   * exec()'ing main.py from within raw REPL instead, which never disconnects.
-   * The file is still on the board, so it also autoruns on the next power-up.
-   */
-  async softReboot() {
-    if (!this.connected) throw new Error('Not connected to XRP');
-    await this.executeCode("exec(open('main.py').read())");
   }
 
   /**
@@ -327,10 +315,10 @@ export class XRPBluetooth extends XRPTransportBase {
     await this._delay(100);
     await this.exitRawRepl();
 
-    // Deploy semantics: auto-run the freshly-saved main.py (no soft reset over BLE).
-    if (filename === 'main.py') {
-      await this.softReboot();
-    }
+    // Deploy only saves the file — it does not run it. main.py will run on the
+    // next power-up/reset; running it immediately here would occupy the board
+    // for as long as the program runs, leaving it unable to service further
+    // REPL/BLE traffic.
   }
 
   /**
@@ -343,12 +331,28 @@ export class XRPBluetooth extends XRPTransportBase {
    * (and our gattserverdisconnected handler) takes it from here.
    */
   async stopExecution() {
-    if (!this.connected || !this._txChar) return;
+    if (!this.connected || !this._txChar) return false;
     try {
       await this.send(BLE_STOP_MSG);
     } catch (_) {
       // Link may already be dropping as the board reboots — ignore.
     }
+    return false;
+  }
+
+  /**
+   * Regain the REPL over BLE — overridden because USB's approach (hammer
+   * Ctrl+C and recheck) isn't reliable here: a busy program can starve the
+   * BLE radio the same way a big flash write does (see uploadFile() above),
+   * so repeated writes are more likely to drop the GATT link than help.
+   * Mirrors the official XRP web IDE: if the board isn't already idle, send
+   * the stop signal to force a firmware reboot and let the resulting
+   * gattserverdisconnected event (_handleGattDisconnect) drive reconnection.
+   */
+  async getToREPL() {
+    if (await this.checkPrompt()) return true;
+    await this.stopExecution();
+    return false;
   }
 
   // ── Incoming data handling ────────────────────────────────────────────────
