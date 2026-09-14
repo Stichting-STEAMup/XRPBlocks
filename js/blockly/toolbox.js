@@ -11,16 +11,10 @@ export function getToolboxDefinition() {
     kind: 'categoryToolbox',
     contents: [
       // ── XRP Categories ──
-      {
-        kind: 'category',
-        categoryKey: 'Events',
-        name: Blockly.Msg['CAT_EVENTS'] || 'Events',
-        categorystyle: 'events_category',
-        cssConfig: { icon: 'cat-icon cat-icon-events' },
-        contents: [
-          { kind: 'block', type: 'xrp_start' }
-        ],
-      },
+      // Note: the "Events" category (xrp_start) is intentionally omitted from
+      // the toolbox. The start block is a permanent, non-deletable fixture
+      // that is always present on the canvas by default (see app.js), so it
+      // should not be selectable/draggable from the toolbox.
       {
         kind: 'category',
         categoryKey: 'Drive',
