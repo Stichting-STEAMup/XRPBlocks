@@ -267,6 +267,8 @@ class XRPBlocksApp {
       'reflectance',
       'servo_one',
       'servo_two',
+      'servo_three',
+      'servo_four',
     ];
 
     const needed = XRPLIB_OBJECTS.filter(name => {

@@ -9,6 +9,8 @@ export function registerServoGenerators(pythonModule) {
   const SERVO_MAP = {
     '1': 'servo_one',
     '2': 'servo_two',
+    '3': 'servo_three',
+    '4': 'servo_four',
   };
 
   function getServoVar(block) {

@@ -7,6 +7,8 @@ export function registerServoBlocks() {
   const SERVO_OPTIONS = [
     ['servo 1', '1'],
     ['servo 2', '2'],
+    ['servo 3', '3'],
+    ['servo 4', '4'],
   ];
 
   // --- Set Servo Angle ---
