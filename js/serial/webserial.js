@@ -6,6 +6,13 @@
 
 import { XRPTransportBase } from './base-transport.js';
 
+// USB Vendor/Product IDs for XRP hardware (WebSerial requestPort filters)
+const XRP_USB_FILTERS = [
+  { usbVendorId: 0x2E8A },                       // Raspberry Pi (RP2040 / RP2350 / Pico W MicroPython)
+  { usbVendorId: 0x1B4F, usbProductId: 0x0046 }, // SparkFun XRP Controller (RP2350)
+  { usbVendorId: 0x1B4F, usbProductId: 0x0045 }, // SparkFun XRP Controller Beta
+];
+
 export class XRPSerial extends XRPTransportBase {
   constructor() {
     super();
@@ -38,8 +45,8 @@ export class XRPSerial extends XRPTransportBase {
     }
 
     try {
-      // Request a serial port — user will see a browser picker dialog
-      this.port = await navigator.serial.requestPort();
+      // Request a serial port — user will see a browser picker dialog filtered to XRP devices
+      this.port = await navigator.serial.requestPort({ filters: XRP_USB_FILTERS });
 
       // Open with standard MicroPython REPL settings
       await this.port.open({
